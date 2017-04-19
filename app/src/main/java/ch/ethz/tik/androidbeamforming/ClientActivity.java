@@ -2,6 +2,7 @@ package ch.ethz.tik.androidbeamforming;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -115,6 +116,7 @@ public class ClientActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 Toast.makeText(ClientActivity.this, "Connect succeeded with " + peer.deviceName, Toast.LENGTH_SHORT).show();
+                goToConnected(peer);
             }
 
             @Override
@@ -201,4 +203,10 @@ public class ClientActivity extends AppCompatActivity {
             Log.d(TAG, "no peers");
         }
     }*/
+
+    public void goToConnected(WifiP2pDevice peer) {
+        Intent connectedIntent = new Intent(this, ClientConnectedActivity.class);
+        connectedIntent.putExtra("peer", peer);
+        startActivity(connectedIntent);
+    }
 }
