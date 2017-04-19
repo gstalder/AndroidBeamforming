@@ -8,8 +8,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
+
+import java.net.InetAddress;
 
 public class HostDirectBroadcastReceiver extends BroadcastReceiver{
     private WifiP2pManager mHostManager;
@@ -63,6 +66,12 @@ public class HostDirectBroadcastReceiver extends BroadcastReceiver{
                 // info to find group owner IP
 
                 Log.d(TAG, "networkInfo true");
+                mHostManager.requestConnectionInfo(mHostChannel, new WifiP2pManager.ConnectionInfoListener() {
+                    @Override
+                    public void onConnectionInfoAvailable(WifiP2pInfo info) {
+                        Log.d(TAG, "in onConnectionInfoAvailable " + info.toString());
+                    }
+                });
             }
             else{
                 Log.d(TAG, "networkInfo false");

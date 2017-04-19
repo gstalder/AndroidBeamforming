@@ -17,7 +17,7 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
+public class HostActivity extends AppCompatActivity{
 
     private WifiP2pManager mHostManager;
     WifiP2pManager.Channel mHostChannel;
@@ -58,14 +58,14 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         showConn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mHostManager.requestConnectionInfo(mHostChannel, new ConnectionInfoListener() {
+                    @Override
+                    public void onConnectionInfoAvailable(WifiP2pInfo info) {
+                        Log.d(TAG, info.toString());
+                    }
+                });
             }
         });
-
-    }
-
-    @Override
-    public void onConnectionInfoAvailable (WifiP2pInfo wifiInfo){
 
     }
 
