@@ -17,7 +17,6 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 */
 
 
-
 public class MainActivity extends AppCompatActivity {
 
 
