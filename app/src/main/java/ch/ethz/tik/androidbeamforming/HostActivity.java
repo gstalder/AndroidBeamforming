@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
@@ -54,6 +55,12 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
         showConn = (Button) this.findViewById(R.id.showConn);
 
+        showConn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
