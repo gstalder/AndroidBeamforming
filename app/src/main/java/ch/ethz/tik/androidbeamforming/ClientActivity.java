@@ -117,8 +117,8 @@ public class ClientActivity extends AppCompatActivity {
         mClientManager.connect(mClientChannel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                setContentView(R.layout.activity_client_connected);
-                connectedTo.append(peer.deviceName);
+                Toast.makeText(ClientActivity.this, "Connected to: " + peer.deviceName, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
