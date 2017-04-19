@@ -21,8 +21,6 @@ public class MicCapture {
     private static final int BUFFERSIZE = AudioRecord.getMinBufferSize(SAMPLERATE, CHANNELS, ENCODING);  // set buffersize as small as possible for minimum latency and calculate size in shorts for 16bit recording
     private static final int SHORTSIZE = BUFFERSIZE / 2; // short array size for getting data is half the size of the buffer!!!
 
-    public int dataBit = 0;
-
     public MicCapture() {
 
         recorder = new AudioRecord(SOURCE, SAMPLERATE,
