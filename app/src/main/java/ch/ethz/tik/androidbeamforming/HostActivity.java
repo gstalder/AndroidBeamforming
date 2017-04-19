@@ -28,8 +28,14 @@ public class HostActivity extends AppCompatActivity{
     private static String TAG = HostActivity.class.getSimpleName();
     private Button showConn;
 
+    private String deviceName;
+
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
+    }
+
+    public void setDeviceName(String name){
+        this.deviceName = name;
     }
 
     @Override
