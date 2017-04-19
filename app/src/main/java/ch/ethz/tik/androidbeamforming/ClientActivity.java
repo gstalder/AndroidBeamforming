@@ -36,6 +36,7 @@ public class ClientActivity extends AppCompatActivity {
     private WifiP2pDeviceList mWifiP2pDeviceList;
 
     private Button discPeers;
+    private TextView connectedTo;
 
 
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
@@ -64,6 +65,7 @@ public class ClientActivity extends AppCompatActivity {
         registerReceiver(mClientReceiver, mIntentFilter);
 
         discPeers = (Button) this.findViewById(R.id.discPeers);
+        connectedTo = (TextView) this.findViewById(R.id.connectedTo);
 
         discPeers.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -115,8 +117,8 @@ public class ClientActivity extends AppCompatActivity {
         mClientManager.connect(mClientChannel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(ClientActivity.this, "Connect succeeded with " + peer.deviceName, Toast.LENGTH_SHORT).show();
-                goToConnected(peer);
+                setContentView(R.layout.activity_client_connected);
+                connectedTo.append(peer.deviceName);
             }
 
             @Override
@@ -204,9 +206,6 @@ public class ClientActivity extends AppCompatActivity {
         }
     }*/
 
-    public void goToConnected(WifiP2pDevice peer) {
-        Intent connectedIntent = new Intent(this, ClientConnectedActivity.class);
-        connectedIntent.putExtra("peer", peer);
-        startActivity(connectedIntent);
-    }
+
+
 }
