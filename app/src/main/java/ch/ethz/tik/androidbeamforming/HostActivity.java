@@ -50,6 +50,7 @@ public class HostActivity extends AppCompatActivity{
         mHostManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mHostChannel = mHostManager.initialize(this, getMainLooper(), null);
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
+        //mHostReceiver.getDeviceName();
         peerList = new ArrayList<>();
         registerReceiver(mHostReceiver, mIntentFilter);
 
