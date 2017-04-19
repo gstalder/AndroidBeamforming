@@ -39,6 +39,7 @@ public class HostDirectBroadcastReceiver extends BroadcastReceiver{
 
         WifiP2pDevice device = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
         thisDeviceName = device.deviceName;
+        mHostActivity.setDeviceName(thisDeviceName);
 
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
 

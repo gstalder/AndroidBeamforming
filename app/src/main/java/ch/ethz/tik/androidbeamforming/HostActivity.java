@@ -28,8 +28,14 @@ public class HostActivity extends AppCompatActivity{
     private static String TAG = HostActivity.class.getSimpleName();
     private Button showConn;
 
+    private String deviceName;
+
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
+    }
+
+    public void setDeviceName(String name){
+        this.deviceName = name;
     }
 
     @Override
@@ -50,7 +56,6 @@ public class HostActivity extends AppCompatActivity{
         mHostManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mHostChannel = mHostManager.initialize(this, getMainLooper(), null);
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
-        //mHostReceiver.getDeviceName();
         peerList = new ArrayList<>();
         registerReceiver(mHostReceiver, mIntentFilter);
 
