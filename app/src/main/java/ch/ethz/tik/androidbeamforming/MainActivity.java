@@ -16,9 +16,11 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 /*Created by Jonas and Gabriel on 19.04.2017
 */
 //Git Test
+// jonas testet auch.
 
 
 public class MainActivity extends AppCompatActivity {
+
 
     private static String TAG = MainActivity.class.getSimpleName();
     private Button setAsHost;
