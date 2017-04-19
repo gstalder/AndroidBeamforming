@@ -13,6 +13,7 @@ import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,8 @@ public class HostActivity extends AppCompatActivity{
     private List<WifiP2pDevice> peerList;
     private static String TAG = HostActivity.class.getSimpleName();
     private Button showConn;
-
     private String deviceName;
+
 
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
@@ -36,6 +37,8 @@ public class HostActivity extends AppCompatActivity{
 
     public void setDeviceName(String name){
         this.deviceName = name;
+        TextView textView = (TextView) findViewById(R.id.ownName);
+        textView.setText("Your Name is " + this.deviceName);
     }
 
     @Override
