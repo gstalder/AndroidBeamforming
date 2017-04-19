@@ -64,9 +64,6 @@ public class ClientActivity extends AppCompatActivity {
 
         discPeers = (Button) this.findViewById(R.id.discPeers);
 
-
-
-
         discPeers.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "start discovering peers");

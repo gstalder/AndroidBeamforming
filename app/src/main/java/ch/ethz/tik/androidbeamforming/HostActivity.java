@@ -9,7 +9,9 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
+import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peerList;
     private static String TAG = HostActivity.class.getSimpleName();
+    private Button showConn;
 
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
@@ -48,6 +51,10 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peerList = new ArrayList<>();
         registerReceiver(mHostReceiver, mIntentFilter);
+
+        showConn = (Button) this.findViewById(R.id.showConn);
+
+
     }
 
     @Override
