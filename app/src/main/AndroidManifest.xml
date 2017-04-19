@@ -28,7 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".HostActivity" />
-        <activity android:name=".ClientActivity"></activity>
+        <activity android:name=".ClientActivity" />
+        <activity android:name=".ClientConnectedActivity"></activity>
     </application>
 
 </manifest>
