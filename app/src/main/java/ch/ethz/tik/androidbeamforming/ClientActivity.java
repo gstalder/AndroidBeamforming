@@ -37,6 +37,7 @@ public class ClientActivity extends AppCompatActivity {
 
     MicCaptureToSocket micCaptureToSocket;
     String hostName;
+    String hostAddress;
 
     //layout elements
     private Button discPeers;
@@ -85,9 +86,9 @@ public class ClientActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                if(hostName != null) {
+                if(hostAddress != null) {
 
-                    micCaptureToSocket = new MicCaptureToSocket(hostName, MainActivity.PORT);
+                    micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
                     micCaptureToSocket.start();
 
                 }
@@ -160,6 +161,7 @@ public class ClientActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 hostName = peer.deviceName;
+                hostAddress = peer.deviceAddress;
                 viewFlipper.showNext();
                 connectedTo.append(hostName);
             }

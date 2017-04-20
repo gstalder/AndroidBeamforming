@@ -14,8 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/discPeers"
@@ -42,8 +41,7 @@
                 android:layout_height="110dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="0.04"></ListView>
+                android:layout_marginTop="8dp"></ListView>
 
             <ListView
                 android:id="@+id/status_listview"
@@ -51,8 +49,7 @@
                 android:layout_height="127dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="0.26"></ListView>
+                android:layout_marginTop="8dp"></ListView>
 
         </LinearLayout>
 
@@ -65,6 +62,7 @@
                 android:id="@+id/connectedTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:text="CONNEDTED TO: " />
 
@@ -72,6 +70,7 @@
                 android:id="@+id/startTransmitting"
                 android:layout_width="150dp"
                 android:layout_height="60dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:text="Start Transmitting" />
 
