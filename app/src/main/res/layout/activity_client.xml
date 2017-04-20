@@ -14,7 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="1">
 
             <Button
                 android:id="@+id/discPeers"
@@ -22,13 +23,12 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="Discover Peers"
-                />
+                android:text="Discover Peers" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="138dp"
-                android:layout_height="27dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="38dp"
                 android:text="Available Peers"
@@ -38,11 +38,21 @@
 
             <ListView
                 android:id="@+id/peers_listview"
-                android:layout_width="265dp"
-                android:layout_height="347dp"
+                android:layout_width="171dp"
+                android:layout_height="110dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"></ListView>
+                android:layout_marginTop="8dp"
+                android:layout_weight="0.04"></ListView>
+
+            <ListView
+                android:id="@+id/status_listview"
+                android:layout_width="164dp"
+                android:layout_height="127dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="0.26"></ListView>
 
         </LinearLayout>
 
@@ -55,7 +65,6 @@
                 android:id="@+id/connectedTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:text="CONNEDTED TO: " />
 
@@ -63,13 +72,10 @@
                 android:id="@+id/startTransmitting"
                 android:layout_width="150dp"
                 android:layout_height="60dp"
-                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="Start Transmitting"
-                />
+                android:text="Start Transmitting" />
 
         </LinearLayout>
-
 
 
     </ViewFlipper>

@@ -174,19 +174,25 @@ public class ClientActivity extends AppCompatActivity {
     public void displayPeers(final WifiP2pDeviceList peers) {
 
         ListView peerView = (ListView) findViewById(R.id.peers_listview);
+        ListView statusView = (ListView) findViewById(R.id.status_listview);
 
         ArrayList<String> peersStringArrayList = new ArrayList<String>();
+        ArrayList<String> statusStringArrayList = new ArrayList<String>();
 
         peerView.setClickable(true);
 
 
         for (WifiP2pDevice device : peers.getDeviceList()){
-            peersStringArrayList.add(device.deviceName + " Status: " + Integer.toString(device.status));
+            peersStringArrayList.add(device.deviceName);
+            statusStringArrayList.add("Status: " + Integer.toString(device.status));
         }
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, peersStringArrayList.toArray());
+        ArrayAdapter arrayAdapter1 = new ArrayAdapter(this, android.R.layout.simple_list_item_1, statusStringArrayList.toArray());
+
 
         peerView.setAdapter(arrayAdapter);
+        statusView.setAdapter(arrayAdapter1);
 
         peerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
