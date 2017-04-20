@@ -39,11 +39,6 @@ public class SocketToFile {
 
     public SocketToFile (int port) {
         this.port = port;
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void Start() {
@@ -60,16 +55,22 @@ public class SocketToFile {
             e.printStackTrace();
         }
 
-        try {
-            client = serverSocket.accept();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
 
         writeThread = new Thread(new Runnable() {
             //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO); //MAY HELP???
             public void run() {
+                try {
+                    serverSocket = new ServerSocket(port);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    client = serverSocket.accept();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 writeDataToFile();
             }
         }, "Socket to File Thread");
