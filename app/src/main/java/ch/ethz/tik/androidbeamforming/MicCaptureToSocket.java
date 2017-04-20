@@ -35,6 +35,7 @@ public class MicCaptureToSocket {
         if (isRunning) return;
         isRunning = true;
 
+        recorder.startRecording();
 
 
         writeThread = new Thread(new Runnable() {
@@ -48,7 +49,7 @@ public class MicCaptureToSocket {
                 }
 
 
-                recorder.startRecording();
+
                 writeAudioDataToSocket();
             }
         }, "AudioToSocket Thread");
