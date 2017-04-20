@@ -29,8 +29,6 @@ public class MicCapture {
     }
 
     public void startRecording() {
-        recorder = new AudioRecord(SOURCE, SAMPLERATE,
-                CHANNELS, ENCODING, BUFFERSIZE);
         recorder.startRecording();
     }
 
