@@ -163,7 +163,7 @@ public class ClientActivity extends AppCompatActivity {
                 hostName = peer.deviceName;
                 hostAddress = peer.deviceAddress;
                 viewFlipper.showNext();
-                connectedTo.append(hostName);
+                connectedTo.append(hostName + " Status: " + Integer.toString(peer.status));
             }
 
             @Override

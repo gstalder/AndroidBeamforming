@@ -39,7 +39,7 @@
 
     <Button
         android:id="@+id/stopReceiving"
-        android:text="Start Receiving"
+        android:text="Stop Receiving"
         android:layout_width="150dp"
         android:layout_height="60dp"
         app:layout_constraintLeft_toLeftOf="parent"
