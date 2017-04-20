@@ -17,14 +17,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostActivity extends AppCompatActivity{
+public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
 
     private WifiP2pManager mHostManager;
     WifiP2pManager.Channel mHostChannel;
     BroadcastReceiver mHostReceiver;
     private boolean isWifiP2pEnabled = false;
     private final IntentFilter mIntentFilter = new IntentFilter();
-    private List<WifiP2pDevice> peerList;
+    private List<WifiP2pDevice> peers;
     private static String TAG = HostActivity.class.getSimpleName();
     private Button showConn;
     private String deviceName;
@@ -58,7 +58,7 @@ public class HostActivity extends AppCompatActivity{
         mHostManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mHostChannel = mHostManager.initialize(this, getMainLooper(), null);
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
-        peerList = new ArrayList<>();
+        peers = new ArrayList<>();
         registerReceiver(mHostReceiver, mIntentFilter);
 
         showConn = (Button) this.findViewById(R.id.showConn);
@@ -70,8 +70,16 @@ public class HostActivity extends AppCompatActivity{
                     @Override
                     public void onConnectionInfoAvailable(WifiP2pInfo info) {
                         Log.d(TAG, info.toString());
+                        if (info.groupFormed && info.isGroupOwner){
+                            Log.d(TAG, "is group owner");
+                        }
+                        else if (info.groupFormed){
+                            Log.d(TAG, "not group owner");
+                            setAsGroudowner();
+                        }
                     }
                 });
+
             }
         });
 
@@ -107,5 +115,19 @@ public class HostActivity extends AppCompatActivity{
                 Log.w(TAG, "Peers not discovered");
             }
         });
+    }
+
+    public void onConnectionInfoAvailable(final WifiP2pInfo info){
+        Log.d(TAG, "in onConnectionInfoAvailable");
+        mHostManager.requestConnectionInfo(mHostChannel, new WifiP2pManager.ConnectionInfoListener() {
+            @Override
+            public void onConnectionInfoAvailable(WifiP2pInfo info) {
+                Log.d(TAG, info.toString());
+            }
+        });
+    }
+
+    public void setAsGroudowner(){
+
     }
 }

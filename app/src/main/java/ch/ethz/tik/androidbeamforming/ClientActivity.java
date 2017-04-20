@@ -97,6 +97,11 @@ public class ClientActivity extends AppCompatActivity {
         unregisterReceiver(mClientReceiver);
     }
 
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mClientReceiver);
+    }
+
     public void discoverPeers () {
         mClientManager.discoverPeers(mClientChannel, new WifiP2pManager.ActionListener() {
 
