@@ -99,7 +99,7 @@ public class SocketToFile {
             byte[] buffer = new byte[BUFFERSIZE];
 
             try {
-                readBytes = is.read(buffer);
+                readBytes = is.read(buffer, 0, BUFFERSIZE);
                 fos.write(buffer, 0, readBytes);
             } catch (IOException e) {
                 e.printStackTrace();
