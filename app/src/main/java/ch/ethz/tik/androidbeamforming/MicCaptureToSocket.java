@@ -29,7 +29,7 @@ public class MicCaptureToSocket {
         socket = new Socket();
     }
 
-    public void Start() {
+    public void start() {
 
         recorder = new MicCapture();
         if (isRunning) return;
@@ -55,7 +55,7 @@ public class MicCaptureToSocket {
 
     }
 
-    public void Stop() {
+    public void stop() {
         isRunning = false;
         recorder.stopRecording();
     }

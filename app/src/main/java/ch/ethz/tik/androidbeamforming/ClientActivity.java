@@ -82,11 +82,16 @@ public class ClientActivity extends AppCompatActivity {
             }
         });
 
-        viewFlipper.setOnClickListener(new View.OnClickListener() {
+        startTransmitting.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
 
+                if(hostName != null) {
 
+                    micCaptureToSocket = new MicCaptureToSocket(hostName, MainActivity.PORT);
+                    micCaptureToSocket.start();
+
+                }
 
             }
 
