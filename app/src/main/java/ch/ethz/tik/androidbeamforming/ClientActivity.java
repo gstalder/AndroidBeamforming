@@ -39,7 +39,7 @@ public class ClientActivity extends AppCompatActivity {
 
     MicCaptureToSocket micCaptureToSocket;
     String hostName;
-    static InetAddress hostAddress;
+    public InetAddress hostAddress;
 
     //layout elements
     private Button discPeers;
@@ -238,7 +238,7 @@ public class ClientActivity extends AppCompatActivity {
 
     }
 
-    public static void setConnectionInfo (WifiP2pInfo info){
+    public void setConnectionInfo (WifiP2pInfo info){
         hostAddress = info.groupOwnerAddress;
     }
 

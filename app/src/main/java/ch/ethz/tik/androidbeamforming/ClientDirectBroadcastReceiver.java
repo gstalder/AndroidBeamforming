@@ -74,17 +74,14 @@ public class ClientDirectBroadcastReceiver extends BroadcastReceiver {
                     .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
             if (networkInfo.isConnected()) {
-                mClientManager.requestConnectionInfo(mClientChannel,
-                        new WifiP2pManager.ConnectionInfoListener() {
+                mClientManager.requestConnectionInfo(mClientChannel,new WifiP2pManager.ConnectionInfoListener() {
                             @Override
-                            public void onConnectionInfoAvailable(
-                                    WifiP2pInfo info) {
+                            public void onConnectionInfoAvailable(WifiP2pInfo info) {
                                 if (info != null) {
-                                    ClientActivity.setConnectionInfo(info); // When connection is established with other device, We can find that info from wifiP2pInfo here.
+                                    mClientActivity.setConnectionInfo(info); // When connection is established with other device, We can find that info from wifiP2pInfo here.
                                 }
                             }
                         }
-
                 );
             }
             else{
