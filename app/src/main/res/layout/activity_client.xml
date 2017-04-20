@@ -16,6 +16,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/discPeers"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="Discover Peers"
+                />
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="138dp"
@@ -26,15 +35,6 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/discPeers"
-                android:layout_width="150dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:text="Discover Peers"
-                 />
 
             <ListView
                 android:id="@+id/peers_listview"
