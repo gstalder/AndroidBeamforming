@@ -30,14 +30,17 @@ public class ClientActivity extends AppCompatActivity {
     WifiP2pManager.Channel mClientChannel;
     BroadcastReceiver mClientReceiver;
     private boolean isWifiP2pEnabled = false;
-    ClientActivity clientActivity;
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peerList;
     private static String TAG = ClientActivity.class.getSimpleName();
     private WifiP2pDeviceList mWifiP2pDeviceList;
 
+    MicCaptureToSocket micCaptureToSocket;
+    String hostName;
+
     //layout elements
     private Button discPeers;
+    private Button startTransmitting;
     private TextView connectedTo;
     private ViewFlipper viewFlipper;
 
@@ -60,14 +63,15 @@ public class ClientActivity extends AppCompatActivity {
         // Indicates this device's details have changed
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-
         mClientManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mClientChannel = mClientManager.initialize(this, getMainLooper(), null);
         mClientReceiver = new ClientDirectBroadcastReceiver(mClientManager, mClientChannel, this);
         peerList = new ArrayList<>();
         registerReceiver(mClientReceiver, mIntentFilter);
 
+        // get Layout Elements
         discPeers = (Button) this.findViewById(R.id.discPeers);
+        startTransmitting = (Button) this.findViewById(R.id.startTransmitting);
         connectedTo = (TextView) this.findViewById(R.id.connectedTo);
         viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
@@ -76,6 +80,16 @@ public class ClientActivity extends AppCompatActivity {
                 Log.d(TAG, "start discovering peers");
                 discoverPeers();
             }
+        });
+
+        viewFlipper.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+
+
+
+            }
+
         });
     }
 
@@ -127,8 +141,9 @@ public class ClientActivity extends AppCompatActivity {
         mClientManager.connect(mClientChannel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
+                hostName = peer.deviceName;
                 viewFlipper.showNext();
-                connectedTo.append(peer.deviceName);
+                connectedTo.append(hostName);
             }
 
             @Override

@@ -19,6 +19,8 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final static int PORT = 45678;
+
     private static String TAG = MainActivity.class.getSimpleName();
     private Button setAsHost;
     private Button setAsClient;
