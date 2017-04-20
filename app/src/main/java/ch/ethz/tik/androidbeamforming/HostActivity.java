@@ -101,6 +101,10 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         super.onPause();
         unregisterReceiver(mHostReceiver);
     }
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mHostReceiver);
+    }
 
     public void discoverPeers () {
         mHostManager.discoverPeers(mHostChannel, new WifiP2pManager.ActionListener() {
