@@ -27,6 +27,7 @@ public class SocketToFile {
     private int port;
     private String path;
     private InputStream is;
+    private int readBytes;
     private File outputFile;
     private FileOutputStream fos;
 
@@ -98,8 +99,8 @@ public class SocketToFile {
             byte[] buffer = new byte[BUFFERSIZE];
 
             try {
-                is.read(buffer);
-                fos.write(buffer);
+                readBytes = is.read(buffer);
+                fos.write(buffer, 0, readBytes);
             } catch (IOException e) {
                 e.printStackTrace();
             }
