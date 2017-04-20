@@ -27,5 +27,25 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showConn" />
 
+    <Button
+        android:id="@+id/startReceiving"
+        android:text="Start Receiving"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ownName"
+        android:layout_marginTop="77dp" />
+
+    <Button
+        android:id="@+id/stopReceiving"
+        android:text="Start Receiving"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startReceiving"
+        android:layout_marginTop="77dp" />
+
 
 </android.support.constraint.ConstraintLayout>

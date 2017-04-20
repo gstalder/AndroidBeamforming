@@ -3,6 +3,8 @@ package ch.ethz.tik.androidbeamforming;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.view.View.OnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,22 +25,30 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private WifiP2pManager mHostManager;
     WifiP2pManager.Channel mHostChannel;
     BroadcastReceiver mHostReceiver;
+    private SocketToFile socketToFile;
     private boolean isWifiP2pEnabled = false;
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peers;
     private static String TAG = HostActivity.class.getSimpleName();
     private Button showConn;
-    private String deviceName;
+    private Button startReceiving;
+    private Button stopReceiving;
+    private WifiP2pDevice ownDevice;
+    private String ownDeviceName;
 
 
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
     }
 
-    public void setDeviceName(String name){
-        this.deviceName = name;
+    public void setOwnDevice (WifiP2pDevice device){
+        this.ownDevice = device;
+    }
+
+    public void setOwnDeviceName(String name){
+        this.ownDeviceName = name;
         TextView textView = (TextView) findViewById(R.id.ownName);
-        textView.setText("Your Name is " + this.deviceName);
+        textView.setText("Your Name is " + this.ownDeviceName);
     }
 
     @Override
@@ -60,10 +71,13 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peers = new ArrayList<>();
         registerReceiver(mHostReceiver, mIntentFilter);
+        socketToFile = new SocketToFile(MainActivity.PORT);
 
         showConn = (Button) this.findViewById(R.id.showConn);
+        startReceiving = (Button) this.findViewById(R.id.startReceiving);
+        stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
 
-        showConn.setOnClickListener(new View.OnClickListener() {
+        showConn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mHostManager.requestConnectionInfo(mHostChannel, new ConnectionInfoListener() {
@@ -75,11 +89,25 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         }
                         else if (info.groupFormed){
                             Log.d(TAG, "not group owner");
-                            setAsGroudowner();
+                            setAsGroupOwner(ownDevice);
                         }
                     }
                 });
 
+            }
+        });
+
+        startReceiving.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v){
+                socketToFile.Start();
+            }
+        });
+
+        stopReceiving.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v){
+                socketToFile.Stop();
             }
         });
 
@@ -131,7 +159,10 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         });
     }
 
-    public void setAsGroudowner(){
-
+    public void setAsGroupOwner(WifiP2pDevice device){
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+        config.wps.setup = WpsInfo.PBC;
+        config.groupOwnerIntent = 0;
     }
 }

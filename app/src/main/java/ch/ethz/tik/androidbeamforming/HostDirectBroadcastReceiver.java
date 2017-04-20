@@ -9,13 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pDeviceList;
-import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 import android.util.Log;
 
-import java.net.InetAddress;
 
 public class HostDirectBroadcastReceiver extends BroadcastReceiver{
     private WifiP2pManager mHostManager;
@@ -41,8 +37,9 @@ public class HostDirectBroadcastReceiver extends BroadcastReceiver{
 
         WifiP2pDevice device = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
         if (device != null) {
+            mHostActivity.setOwnDevice(device);
             String thisDeviceName = device.deviceName;
-            mHostActivity.setDeviceName(thisDeviceName);
+            mHostActivity.setOwnDeviceName(thisDeviceName);
         }
 
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
@@ -86,9 +83,5 @@ public class HostDirectBroadcastReceiver extends BroadcastReceiver{
             // Respond to this device's wifi state changing
 
         }
-    }
-
-    public void getDeviceName(){
-
     }
 }
