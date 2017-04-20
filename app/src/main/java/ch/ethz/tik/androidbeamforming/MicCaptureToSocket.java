@@ -35,19 +35,20 @@ public class MicCaptureToSocket {
         if (isRunning) return;
         isRunning = true;
 
-        try {
-            socket.bind(null);
-            socket.connect((new InetSocketAddress(host, port)), 500); // second argument: timeout value!
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-
-        recorder.startRecording();
 
         writeThread = new Thread(new Runnable() {
             //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO); //MAY HELP???
             public void run() {
+                try {
+                    socket.bind(null);
+                    socket.connect((new InetSocketAddress(host, port)), 500); // second argument: timeout value!
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                recorder.startRecording();
                 writeAudioDataToSocket();
             }
         }, "AudioToSocket Thread");
