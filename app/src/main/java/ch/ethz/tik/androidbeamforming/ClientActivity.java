@@ -113,13 +113,13 @@ public class ClientActivity extends AppCompatActivity {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = peer.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
+        config.groupOwnerIntent = 0;
 
         mClientManager.connect(mClientChannel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 setContentView(R.layout.activity_client_connected);
                 connectedTo.append(peer.deviceName);
-
             }
 
             @Override
