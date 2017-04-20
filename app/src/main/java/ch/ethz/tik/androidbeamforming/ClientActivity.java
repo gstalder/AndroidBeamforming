@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,10 @@ public class ClientActivity extends AppCompatActivity {
     private static String TAG = ClientActivity.class.getSimpleName();
     private WifiP2pDeviceList mWifiP2pDeviceList;
 
+    //layout elements
     private Button discPeers;
     private TextView connectedTo;
+    private ViewFlipper viewFlipper;
 
 
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
@@ -66,6 +69,7 @@ public class ClientActivity extends AppCompatActivity {
 
         discPeers = (Button) this.findViewById(R.id.discPeers);
         connectedTo = (TextView) this.findViewById(R.id.connectedTo);
+        viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
         discPeers.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -118,7 +122,7 @@ public class ClientActivity extends AppCompatActivity {
         mClientManager.connect(mClientChannel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                setContentView(R.layout.activity_client_connected);
+                viewFlipper.showNext();
                 connectedTo.append(peer.deviceName);
             }
 
