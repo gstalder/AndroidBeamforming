@@ -3,9 +3,11 @@ package ch.ethz.tik.androidbeamforming;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -65,6 +67,29 @@ public class ClientDirectBroadcastReceiver extends BroadcastReceiver {
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
             // Respond to new connection or disconnections
+            if (mClientManager == null) {
+                return;
+            }
+            NetworkInfo networkInfo = (NetworkInfo) intent
+                    .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
+
+            if (networkInfo.isConnected()) {
+                mClientManager.requestConnectionInfo(mClientChannel,
+                        new WifiP2pManager.ConnectionInfoListener() {
+                            @Override
+                            public void onConnectionInfoAvailable(
+                                    WifiP2pInfo info) {
+                                if (info != null) {
+                                    ClientActivity.setConnectionInfo(info); // When connection is established with other device, We can find that info from wifiP2pInfo here.
+                                }
+                            }
+                        }
+
+                );
+            }
+            else{
+                Log.d(TAG, "networkInfo false");
+            }
 
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             // Respond to this device's wifi state changing

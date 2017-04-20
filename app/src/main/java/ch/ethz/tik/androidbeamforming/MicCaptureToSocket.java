@@ -2,6 +2,7 @@ package ch.ethz.tik.androidbeamforming;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -16,17 +17,16 @@ public class MicCaptureToSocket {
     private MicCapture recorder;
     private Thread writeThread;
     private Socket socket;
-    private String host;
+    private InetAddress host;
     private int port;
     private OutputStream os;
 
     private boolean isRunning = false;
 
 
-    public MicCaptureToSocket (String host, int port) {
+    public MicCaptureToSocket (InetAddress host, int port) {
         this.host = host;
         this.port = port;
-        socket = new Socket();
     }
 
     public void start() {
@@ -42,8 +42,9 @@ public class MicCaptureToSocket {
             //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO); //MAY HELP???
             public void run() {
                 try {
-                    socket.bind(null);
-                    socket.connect((new InetSocketAddress(host, port)), 500); // second argument: timeout value!
+                    socket = new Socket(host,port);
+                    //socket.bind(null);
+                    //socket.connect((new InetSocketAddress(host, port)), 500); // second argument: timeout value!
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

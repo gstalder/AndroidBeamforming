@@ -8,6 +8,7 @@ import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class ClientActivity extends AppCompatActivity {
 
     MicCaptureToSocket micCaptureToSocket;
     String hostName;
-    String hostAddress;
+    static InetAddress hostAddress;
 
     //layout elements
     private Button discPeers;
@@ -88,7 +90,7 @@ public class ClientActivity extends AppCompatActivity {
 
                 if(hostAddress != null) {
 
-                    micCaptureToSocket = new MicCaptureToSocket(hostName, MainActivity.PORT);
+                    micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
                     micCaptureToSocket.start();
 
                 }
@@ -161,7 +163,6 @@ public class ClientActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 hostName = peer.deviceName;
-                hostAddress = peer.deviceAddress;
                 viewFlipper.showNext();
                 connectedTo.append(hostName + " Status: " + Integer.toString(peer.status));
             }
@@ -235,6 +236,10 @@ public class ClientActivity extends AppCompatActivity {
         else{ Log.d(TAG, "no peers in list");}*/
 
 
+    }
+
+    public static void setConnectionInfo (WifiP2pInfo info){
+        hostAddress = info.groupOwnerAddress;
     }
 
     /*
