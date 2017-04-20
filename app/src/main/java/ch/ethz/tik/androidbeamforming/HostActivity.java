@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         mHostChannel = mHostManager.initialize(this, getMainLooper(), null);
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peers = new ArrayList<>();
-        registerReceiver(mHostReceiver, mIntentFilter);
+
         socketToFile = new SocketToFile(MainActivity.PORT);
 
         showConn = (Button) this.findViewById(R.id.showConn);
@@ -93,7 +94,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         }
                     }
                 });
-
+                Log.d(TAG, Integer.toString(ownDevice.status) + " status");
             }
         });
 
@@ -116,6 +117,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     @Override
     public void onStart(){
         super.onStart();
+        registerReceiver(mHostReceiver, mIntentFilter);
         discoverPeers();
     }
 
@@ -129,9 +131,22 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         super.onPause();
         unregisterReceiver(mHostReceiver);
     }
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mHostReceiver);
+    protected void onStop() {
+        super.onStop();
+        if (mHostManager != null && mHostChannel != null) {
+            mHostManager.cancelConnect(mHostChannel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "disconnect succeed.");
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Log.d(TAG, "disconnect failed.");
+                }
+            });
+        }
+        //unregisterReceiver(mHostReceiver);
     }
 
     public void discoverPeers () {

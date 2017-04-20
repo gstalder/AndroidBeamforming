@@ -68,10 +68,8 @@ public class HostDirectBroadcastReceiver extends BroadcastReceiver{
                     .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
             if (networkInfo.isConnected()) {
-
                 // We are connected with the other device, request connection
                 // info to find group owner IP
-
                 Log.d(TAG, "networkInfo true");
 
             }

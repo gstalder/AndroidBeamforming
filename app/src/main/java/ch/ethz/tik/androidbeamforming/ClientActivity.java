@@ -67,7 +67,6 @@ public class ClientActivity extends AppCompatActivity {
         mClientChannel = mClientManager.initialize(this, getMainLooper(), null);
         mClientReceiver = new ClientDirectBroadcastReceiver(mClientManager, mClientChannel, this);
         peerList = new ArrayList<>();
-        registerReceiver(mClientReceiver, mIntentFilter);
 
         // get Layout Elements
         discPeers = (Button) this.findViewById(R.id.discPeers);
@@ -101,6 +100,7 @@ public class ClientActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        registerReceiver(mClientReceiver, mIntentFilter);
         discoverPeers();
     }
 
@@ -116,9 +116,22 @@ public class ClientActivity extends AppCompatActivity {
         unregisterReceiver(mClientReceiver);
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mClientReceiver);
+    protected void onStop() {
+        super.onStop();
+        //unregisterReceiver(mClientReceiver);
+        if (mClientChannel != null && mClientChannel != null) {
+            mClientManager.cancelConnect(mClientChannel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "disconnect succeed.");
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Log.d(TAG, "disconnect failed.");
+                }
+            });
+        }
     }
 
     public void discoverPeers () {
@@ -168,7 +181,7 @@ public class ClientActivity extends AppCompatActivity {
 
 
         for (WifiP2pDevice device : peers.getDeviceList()){
-            peersStringArrayList.add(device.deviceName);
+            peersStringArrayList.add(device.deviceName + " Status: " + Integer.toString(device.status));
         }
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, peersStringArrayList.toArray());
