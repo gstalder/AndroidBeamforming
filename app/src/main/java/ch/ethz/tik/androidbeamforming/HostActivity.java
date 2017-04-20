@@ -25,12 +25,14 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private WifiP2pManager mHostManager;
     WifiP2pManager.Channel mHostChannel;
     BroadcastReceiver mHostReceiver;
+    private SocketToFile socketToFile;
     private boolean isWifiP2pEnabled = false;
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peers;
     private static String TAG = HostActivity.class.getSimpleName();
     private Button showConn;
     private Button startReceiving;
+    private Button stopReceiving;
     private WifiP2pDevice ownDevice;
     private String ownDeviceName;
 
@@ -69,9 +71,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peers = new ArrayList<>();
         registerReceiver(mHostReceiver, mIntentFilter);
+        socketToFile = new SocketToFile(MainActivity.PORT);
 
         showConn = (Button) this.findViewById(R.id.showConn);
         startReceiving = (Button) this.findViewById(R.id.startReceiving);
+        stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
 
         showConn.setOnClickListener(new OnClickListener() {
             @Override
@@ -96,8 +100,14 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         startReceiving.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v){
-                SocketToFile socketToFile = new SocketToFile(MainActivity.PORT);
                 socketToFile.Start();
+            }
+        });
+
+        stopReceiving.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v){
+                socketToFile.Stop();
             }
         });
 
