@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private Button stopReceiving;
     private WifiP2pDevice ownDevice;
     private String ownDeviceName;
+    private ServerSocket serverSocket;
 
 
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
