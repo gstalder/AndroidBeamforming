@@ -98,7 +98,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         } catch (IOException e) {
             e.printStackTrace();
         }
-        socketToFileList = new ArrayList<SocketToFile>();
+        socketToFileList = new ArrayList<>();
         filename = getFilename();
 
         showConn = (Button) this.findViewById(R.id.showConn);
