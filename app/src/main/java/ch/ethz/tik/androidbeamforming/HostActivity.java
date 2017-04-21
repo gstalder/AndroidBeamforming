@@ -53,7 +53,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private String ownDeviceName;
 
     private ServerSocket serverSocket;
-    private List<Socket> socketList;
     private List<SocketToFile> socketToFileList;
     private Thread connectionAcceptThread;
     private String filename;
@@ -99,7 +98,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         } catch (IOException e) {
             e.printStackTrace();
         }
-        socketList = new ArrayList<Socket>();
         socketToFileList = new ArrayList<SocketToFile>();
         filename = getFilename();
 
@@ -113,7 +111,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 while(isAcceptingConnections) {
                     try {
                         Socket newClient = serverSocket.accept();
-                        socketList.add(newClient);
                         socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
                     } catch (IOException e) {
                         e.printStackTrace();
