@@ -9,9 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Jonas Stehli on 4/16/2017.
@@ -23,20 +20,21 @@ public class SocketToFile {
     private Thread writeThread;
     private ServerSocket serverSocket;
     private Socket client;
-    private int port;
     private String path;
     private InputStream is;
     private int readBytes;
     private File outputFile;
     private FileOutputStream fos;
+    private String filename;
 
     private boolean isRunning = false;
 
     private static final int BUFFERSIZE = 1024;
 
 
-    public SocketToFile (int port) {
-        this.port = port;
+    public SocketToFile (Socket socket, String filename) {
+        this.client = socket;
+        this.filename = filename;
     }
 
     public void Start() {
@@ -44,7 +42,7 @@ public class SocketToFile {
         if (isRunning) return;
         isRunning = true;
 
-        path = Environment.getExternalStorageDirectory() + "/" + getFilename();
+        path = Environment.getExternalStorageDirectory() + "/" + filename;
         outputFile = new File(path);
 
         try {
@@ -59,16 +57,6 @@ public class SocketToFile {
         writeThread = new Thread(new Runnable() {
             //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO); //MAY HELP???
             public void run() {
-                try {
-                    serverSocket = new ServerSocket(port);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    client = serverSocket.accept();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 writeDataToFile();
             }
         }, "Socket to File Thread");
@@ -106,23 +94,9 @@ public class SocketToFile {
 
         try {
             fos.close();
-            serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-    private String getFilename() {
-        Date curDate = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
-        return format.format(curDate) + ".pcm";
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-
 
 }

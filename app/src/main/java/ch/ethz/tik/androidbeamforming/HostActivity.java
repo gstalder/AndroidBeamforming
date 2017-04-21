@@ -18,9 +18,14 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
 
@@ -29,6 +34,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     BroadcastReceiver mHostReceiver;
     private SocketToFile socketToFile;
     private boolean isWifiP2pEnabled = false;
+    private boolean isAcceptingConnections = true;
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peers;
     private static String TAG = HostActivity.class.getSimpleName();
@@ -37,8 +43,13 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private Button stopReceiving;
     private WifiP2pDevice ownDevice;
     private String ownDeviceName;
-    private ServerSocket serverSocket;
 
+    private ServerSocket serverSocket;
+    private List<Socket> socketList;
+    private List<SocketToFile> socketToFileList;
+    private Thread connectionAcceptThread;
+    private String filename;
+    private int clientNumber = 1;
 
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
@@ -74,11 +85,37 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peers = new ArrayList<>();
 
-        socketToFile = new SocketToFile(MainActivity.PORT);
+        try {
+            serverSocket = new ServerSocket(MainActivity.PORT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        socketList = new ArrayList<Socket>();
+        socketToFileList = new ArrayList<SocketToFile>();
+        filename = getFilename();
 
         showConn = (Button) this.findViewById(R.id.showConn);
         startReceiving = (Button) this.findViewById(R.id.startReceiving);
         stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
+
+        connectionAcceptThread = new Thread(new Runnable() {
+            public void run() {
+
+                while(isAcceptingConnections) {
+                    try {
+                        Socket newClient = serverSocket.accept();
+                        socketList.add(newClient);
+                        socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    clientNumber++;
+                }
+
+            }
+        }, "Connection Accepting Thread");
+        connectionAcceptThread.start();
+
 
         showConn.setOnClickListener(new OnClickListener() {
             @Override
@@ -103,15 +140,25 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         startReceiving.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v){
-                socketToFile.Start();
+                isAcceptingConnections = false;
+                for (int i = 0; i < socketToFileList.size(); i++)
+                    socketToFileList.get(i).Start();
+
             }
         });
 
         stopReceiving.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v){
-                socketToFile.Stop();
+                for (int i = 0; i < socketToFileList.size(); i++)
+                    socketToFileList.get(i).Stop();
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
         });
 
     }
@@ -181,5 +228,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         config.deviceAddress = device.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
         config.groupOwnerIntent = 0;
+    }
+
+    private String getFilename() {
+        Date curDate = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
+        return format.format(curDate);
     }
 }
