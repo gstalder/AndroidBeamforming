@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
@@ -31,6 +33,9 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peers;
     private static String TAG = HostActivity.class.getSimpleName();
+    public WifiP2pGroup connectionGroup;
+    private ArrayList<WifiP2pDevice> clientList;
+
     private Button showConn;
     private Button startReceiving;
     private Button stopReceiving;
@@ -90,11 +95,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         }
                         else if (info.groupFormed){
                             Log.d(TAG, "not group owner");
-                            setAsGroupOwner(ownDevice);
                         }
                     }
                 });
                 Log.d(TAG, Integer.toString(ownDevice.status) + " status");
+                getGroup();
             }
         });
 
@@ -174,10 +179,17 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         });
     }
 
-    public void setAsGroupOwner(WifiP2pDevice device){
-        WifiP2pConfig config = new WifiP2pConfig();
-        config.deviceAddress = device.deviceAddress;
-        config.wps.setup = WpsInfo.PBC;
-        config.groupOwnerIntent = 0;
+    public void getGroup(){
+        if (mHostManager != null && mHostChannel != null){
+            mHostManager.requestGroupInfo(mHostChannel, new WifiP2pManager.GroupInfoListener() {
+                @Override
+                public void onGroupInfoAvailable(WifiP2pGroup group) {
+                    connectionGroup = group;
+                    clientList.clear();
+                    clientList.addAll(connectionGroup.getClientList());
+                    Log.d(TAG, Integer.toString(clientList.size()));
+                }
+            });
+        }
     }
 }
