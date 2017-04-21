@@ -214,53 +214,9 @@ public class ClientActivity extends AppCompatActivity {
                 }
             }
         });
-
-        /*
-        if (!refreshedPeers.equals(peerList)){
-            peerList.clear();
-            peerList.addAll(refreshedPeers);
-        }
-
-        if (peersStringArrayList.size() > 0){
-            WifiP2pDevice deviceToConnect = new WifiP2pDevice();
-            for (int i = 0; i < peersStringArrayList.size(); i++) {
-                Log.d(TAG, peersStringArrayList.get(i));
-                if (peerList.size() > 0) {
-                    //deviceToConnect = peerList.get(0);
-                    //connect(deviceToConnect);
-                }
-                else {Log.d(TAG, "No device in PeerList"); }
-            }
-        }
-        else{ Log.d(TAG, "no peers in list");}*/
-
-
     }
 
     public void setConnectionInfo (WifiP2pInfo info){
         hostAddress = info.groupOwnerAddress;
     }
-
-    /*
-    @Override
-    public void onPeersAvailable(WifiP2pDeviceList peerList) {
-
-        Collection<WifiP2pDevice> refreshedPeers = peerList.getDeviceList();
-
-        if (!refreshedPeers.equals(peers)) {
-            peers.clear();
-            peers.addAll(refreshedPeers);
-            for (int i=0; i < peers.size(); i++){
-                WifiP2pDevice device = peers.get(i);
-                String deviceName = device.deviceName;
-                Toast.makeText(MainActivity.this, deviceName, Toast.LENGTH_LONG).show();
-            }
-        }
-        else {
-            Log.d(TAG, "no peers");
-        }
-    }*/
-
-
-
 }
