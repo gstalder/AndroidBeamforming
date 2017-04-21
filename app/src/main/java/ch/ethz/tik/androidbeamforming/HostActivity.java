@@ -185,9 +185,14 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 @Override
                 public void onGroupInfoAvailable(WifiP2pGroup group) {
                     connectionGroup = group;
-                    clientList.clear();
-                    clientList.addAll(connectionGroup.getClientList());
-                    Log.d(TAG, Integer.toString(clientList.size()));
+                    if (clientList != null) {
+                        clientList.clear();
+                        clientList.addAll(connectionGroup.getClientList());
+                        Log.d(TAG, Integer.toString(clientList.size()));
+                    }
+                    else {
+                        Log.d(TAG, "No Clients in getGroup");
+                    }
                 }
             });
         }
