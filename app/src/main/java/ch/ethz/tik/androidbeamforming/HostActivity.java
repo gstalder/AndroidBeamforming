@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -14,7 +15,9 @@ import android.os.Bundle;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -167,6 +170,18 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         });
     }
 
+    public void displayStates(WifiP2pDeviceList peers){
+        ListView peerStatusView = (ListView) findViewById(R.id.peersStatus_listview);
+        ArrayList<String> peersStatusStringArrayList = new ArrayList<String>();
+
+        for (WifiP2pDevice device : peers.getDeviceList()){
+            peersStatusStringArrayList.add(device.deviceName + " Status: " + device.status + " GO: " + checkGroupOwner(device));
+        }
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, peersStatusStringArrayList.toArray());
+        peerStatusView.setAdapter(arrayAdapter);
+    }
+
     public void onConnectionInfoAvailable(final WifiP2pInfo info){
         Log.d(TAG, "in onConnectionInfoAvailable");
         mHostManager.requestConnectionInfo(mHostChannel, new WifiP2pManager.ConnectionInfoListener() {
@@ -175,6 +190,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 Log.d(TAG, info.toString());
             }
         });
+    }
+
+    public String checkGroupOwner (WifiP2pDevice device) {
+        if (device.isGroupOwner()) return "yes";
+        return "no";
     }
 
     public void getGroupInfo (){
