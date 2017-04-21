@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -89,6 +90,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
         mHostManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mHostChannel = mHostManager.initialize(this, getMainLooper(), null);
+        deletePersistentGroups();
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peers = new ArrayList<>();
 
@@ -127,6 +129,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         showConn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateConnectionStatus();
                 mHostManager.requestConnectionInfo(mHostChannel, new ConnectionInfoListener() {
                     @Override
                     public void onConnectionInfoAvailable(WifiP2pInfo info) {
@@ -241,9 +244,37 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         });
     }
 
+    public void updateConnectionStatus() {
+        mHostManager.requestPeers(mHostChannel, new WifiP2pManager.PeerListListener() {
+            @Override
+            public void onPeersAvailable(WifiP2pDeviceList peers) {
+                displayStates(peers);
+            }
+        });
+    }
+
     public String checkGroupOwner (WifiP2pDevice device) {
-        if (device.isGroupOwner()) return "yes";
-        return "no";
+        if (device.status < 3) {
+            if (device.isGroupOwner()) return "no";
+            return "yes";
+        }
+        else return "nc";
+    }
+
+    private void deletePersistentGroups(){
+        try {
+            Method[] methods = WifiP2pManager.class.getMethods();
+            for (int i = 0; i < methods.length; i++) {
+                if (methods[i].getName().equals("deletePersistentGroup")) {
+                    // Delete any persistent group
+                    for (int netid = 0; netid < 32; netid++) {
+                        methods[i].invoke(mHostManager, mHostChannel, netid, null);
+                    }
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void getGroupInfo (){

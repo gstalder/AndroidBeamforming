@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,7 @@ public class ClientActivity extends AppCompatActivity {
 
         mClientManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mClientChannel = mClientManager.initialize(this, getMainLooper(), null);
+        deletePersistentGroups();
         mClientReceiver = new ClientDirectBroadcastReceiver(mClientManager, mClientChannel, this);
         peerList = new ArrayList<>();
 
@@ -218,5 +220,21 @@ public class ClientActivity extends AppCompatActivity {
 
     public void setConnectionInfo (WifiP2pInfo info){
         hostAddress = info.groupOwnerAddress;
+    }
+
+    private void deletePersistentGroups(){
+        try {
+            Method[] methods = WifiP2pManager.class.getMethods();
+            for (int i = 0; i < methods.length; i++) {
+                if (methods[i].getName().equals("deletePersistentGroup")) {
+                    // Delete any persistent group
+                    for (int netid = 0; netid < 32; netid++) {
+                        methods[i].invoke(mClientManager, mClientChannel, netid, null);
+                    }
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
