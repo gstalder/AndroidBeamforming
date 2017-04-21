@@ -23,7 +23,6 @@ public class SocketToFile {
     private Thread writeThread;
     private ServerSocket serverSocket;
     private Socket client;
-    private String host;
     private int port;
     private String path;
     private InputStream is;
@@ -32,8 +31,6 @@ public class SocketToFile {
     private FileOutputStream fos;
 
     private boolean isRunning = false;
-
-    //private byte[] buffer;
 
     private static final int BUFFERSIZE = 1024;
 

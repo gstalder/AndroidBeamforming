@@ -43,8 +43,6 @@ public class MicCaptureToSocket {
             public void run() {
                 try {
                     socket = new Socket(host,port);
-                    //socket.bind(null);
-                    //socket.connect((new InetSocketAddress(host, port)), 500); // second argument: timeout value!
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
