@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +24,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 
 public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
 
@@ -38,6 +41,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peers;
     private static String TAG = HostActivity.class.getSimpleName();
+
     private Button showConn;
     private Button startReceiving;
     private Button stopReceiving;
@@ -129,7 +133,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         }
                         else if (info.groupFormed){
                             Log.d(TAG, "not group owner");
-                            setAsGroupOwner(ownDevice);
                         }
                     }
                 });
@@ -223,11 +226,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         });
     }
 
-    public void setAsGroupOwner(WifiP2pDevice device){
-        WifiP2pConfig config = new WifiP2pConfig();
-        config.deviceAddress = device.deviceAddress;
-        config.wps.setup = WpsInfo.PBC;
-        config.groupOwnerIntent = 0;
+    public void getGroupInfo (){
+        //mHostManager.
     }
 
     private String getFilename() {

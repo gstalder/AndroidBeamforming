@@ -153,7 +153,6 @@ public class ClientActivity extends AppCompatActivity {
     }
 
     public void connect(final WifiP2pDevice peer) {
-        // Picking the first device found on the network.
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = peer.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
@@ -187,7 +186,7 @@ public class ClientActivity extends AppCompatActivity {
 
         for (WifiP2pDevice device : peers.getDeviceList()){
             peersStringArrayList.add(device.deviceName);
-            statusStringArrayList.add("Status: " + Integer.toString(device.status));
+            statusStringArrayList.add("Status: " + device.status);
         }
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, peersStringArrayList.toArray());

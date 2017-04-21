@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
@@ -68,9 +69,6 @@ public class HostDirectBroadcastReceiver extends BroadcastReceiver{
                     .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
             if (networkInfo.isConnected()) {
-                // We are connected with the other device, request connection
-                // info to find group owner IP
-                Log.d(TAG, "networkInfo true");
 
             }
             else{
