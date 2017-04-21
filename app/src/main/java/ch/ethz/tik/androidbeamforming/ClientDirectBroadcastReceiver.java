@@ -78,7 +78,8 @@ public class ClientDirectBroadcastReceiver extends BroadcastReceiver {
                             @Override
                             public void onConnectionInfoAvailable(WifiP2pInfo info) {
                                 if (info != null) {
-                                    mClientActivity.setConnectionInfo(info); // When connection is established with other device, We can find that info from wifiP2pInfo here.
+                                    // When connection is established with other device, We can find that info from wifiP2pInfo here.
+                                    mClientActivity.setConnectionInfo(info);
                                 }
                             }
                         }

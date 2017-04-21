@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
 
     private WifiP2pManager mHostManager;
@@ -33,8 +34,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peers;
     private static String TAG = HostActivity.class.getSimpleName();
-    public WifiP2pGroup connectionGroup;
-    private ArrayList<WifiP2pDevice> clientList;
 
     private Button showConn;
     private Button startReceiving;
@@ -99,7 +98,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                     }
                 });
                 Log.d(TAG, Integer.toString(ownDevice.status) + " status");
-                getGroup();
             }
         });
 
@@ -179,22 +177,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         });
     }
 
-    public void getGroup(){
-        if (mHostManager != null && mHostChannel != null){
-            mHostManager.requestGroupInfo(mHostChannel, new WifiP2pManager.GroupInfoListener() {
-                @Override
-                public void onGroupInfoAvailable(WifiP2pGroup group) {
-                    connectionGroup = group;
-                    if (clientList != null) {
-                        clientList.clear();
-                        clientList.addAll(connectionGroup.getClientList());
-                        Log.d(TAG, Integer.toString(clientList.size()));
-                    }
-                    else {
-                        Log.d(TAG, "No Clients in getGroup");
-                    }
-                }
-            });
-        }
+    public void getGroupInfo (){
+        //mHostManager.
     }
 }
