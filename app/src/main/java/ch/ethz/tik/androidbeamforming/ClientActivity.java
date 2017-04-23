@@ -8,6 +8,7 @@ import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
@@ -122,21 +123,16 @@ public class ClientActivity extends AppCompatActivity {
     }
 
     protected void onStop() {
-        super.onStop();
         //unregisterReceiver(mClientReceiver);
-        if (mClientChannel != null && mClientChannel != null) {
-            mClientManager.cancelConnect(mClientChannel, new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-                    Log.d(TAG, "disconnect succeed.");
-                }
+        disconnect();
+        deletePersistentGroups();
+        super.onStop();
+    }
 
-                @Override
-                public void onFailure(int reason) {
-                    Log.d(TAG, "disconnect failed.");
-                }
-            });
-        }
+    protected void onDestroy() {
+        disconnect();
+        deletePersistentGroups();
+        super.onDestroy();
     }
 
     public void discoverPeers () {
@@ -235,6 +231,40 @@ public class ClientActivity extends AppCompatActivity {
             }
         } catch(Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void disconnect (){
+        if (mClientChannel != null && mClientChannel != null) {
+            mClientManager.cancelConnect(mClientChannel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "cancelConnect succeed.");
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Log.d(TAG, "cancelConnect failed." + reason);
+                }
+            });
+            mClientManager.requestGroupInfo(mClientChannel, new WifiP2pManager.GroupInfoListener() {
+                @Override
+                public void onGroupInfoAvailable(WifiP2pGroup group) {
+                    if (group != null){
+                        mClientManager.removeGroup(mClientChannel, new WifiP2pManager.ActionListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "removeGroup success");
+                            }
+
+                            @Override
+                            public void onFailure(int reason) {
+                                Log.d(TAG, "removeGroup failed." + reason);
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 }

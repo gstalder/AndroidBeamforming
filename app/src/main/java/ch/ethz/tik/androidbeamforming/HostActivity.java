@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -49,6 +50,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private Button showConn;
     private Button startReceiving;
     private Button stopReceiving;
+    private Button resetConnections;
     private WifiP2pDevice ownDevice;
     private String ownDeviceName;
 
@@ -104,6 +106,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         showConn = (Button) this.findViewById(R.id.showConn);
         startReceiving = (Button) this.findViewById(R.id.startReceiving);
         stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
+        resetConnections = (Button) this.findViewById(R.id.resetConnections);
 
         connectionAcceptThread = new Thread(new Runnable() {
             public void run() {
@@ -140,6 +143,14 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                     }
                 });
                 Log.d(TAG, Integer.toString(ownDevice.status) + " status");
+            }
+        });
+
+        resetConnections.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disconnect();
+                deletePersistentGroups();
             }
         });
 
@@ -187,21 +198,16 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         unregisterReceiver(mHostReceiver);
     }
     protected void onStop() {
+        disconnect();
+        deletePersistentGroups();
         super.onStop();
-        if (mHostManager != null && mHostChannel != null) {
-            mHostManager.cancelConnect(mHostChannel, new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-                    Log.d(TAG, "disconnect succeed.");
-                }
-
-                @Override
-                public void onFailure(int reason) {
-                    Log.d(TAG, "disconnect failed.");
-                }
-            });
-        }
         //unregisterReceiver(mHostReceiver);
+    }
+
+    protected void onDestroy() {
+        disconnect();
+        deletePersistentGroups();
+        super.onDestroy();
     }
 
     public void discoverPeers () {
@@ -219,7 +225,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         });
     }
 
-    public void displayStates(WifiP2pDeviceList peers){
+    public void displayStates(final WifiP2pDeviceList peers){
         ListView peerStatusView = (ListView) findViewById(R.id.peersStatus_listview);
         ArrayList<String> peersStatusStringArrayList = new ArrayList<String>();
 
@@ -276,6 +282,40 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
     public void getGroupInfo (){
         //mHostManager.
+    }
+
+    public void disconnect() {
+        if (mHostManager != null && mHostChannel != null) {
+            mHostManager.cancelConnect(mHostChannel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "cancelConnect succeed.");
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Log.d(TAG, "cancelConnect failed." + reason);
+                }
+            });
+            mHostManager.requestGroupInfo(mHostChannel, new WifiP2pManager.GroupInfoListener() {
+                @Override
+                public void onGroupInfoAvailable(WifiP2pGroup group) {
+                    if (group != null){
+                        mHostManager.removeGroup(mHostChannel, new WifiP2pManager.ActionListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "removeGroup success");
+                            }
+
+                            @Override
+                            public void onFailure(int reason) {
+                                Log.d(TAG, "removeGroup failed." + reason);
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     private String getFilename() {

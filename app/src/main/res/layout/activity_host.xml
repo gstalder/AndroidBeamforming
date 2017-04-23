@@ -10,8 +10,21 @@
         android:id="@+id/showConn"
         android:text="Update Connections States"
         android:layout_width="160dp"
-        android:layout_height="66dp"
+        android:layout_height="68dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="28dp"
+        app:layout_constraintRight_toLeftOf="@+id/resetConnections"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.4" />
+
+    <Button
+        android:id="@+id/resetConnections"
+        android:layout_width="160dp"
+        android:layout_height="68dp"
+        android:text="Reset Connections"
+        android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="28dp" />
@@ -20,12 +33,12 @@
         android:id="@+id/ownName"
         android:layout_width="109dp"
         android:layout_height="46dp"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="41dp"
         android:text="TextView"
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showConn"
+        app:layout_constraintTop_toBottomOf="@+id/resetConnections"
         app:layout_constraintHorizontal_bias="0.501" />
 
     <Button
@@ -34,7 +47,7 @@
         android:layout_width="150dp"
         android:layout_height="60dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="36dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="49dp"
         app:layout_constraintTop_toBottomOf="@+id/peersStatus_listview" />
 
@@ -48,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/peersStatus_listview"
         app:layout_constraintLeft_toRightOf="@+id/startReceiving"
         android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.125" />
+        app:layout_constraintHorizontal_bias="0.733" />
 
     <ListView
         android:id="@+id/peersStatus_listview"
@@ -61,6 +74,7 @@
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.25"></ListView>
+
 
 
 </android.support.constraint.ConstraintLayout>
