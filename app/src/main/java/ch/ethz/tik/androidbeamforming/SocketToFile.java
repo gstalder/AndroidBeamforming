@@ -65,6 +65,13 @@ public class SocketToFile {
 
     public String Stop() {
         isRunning = false;
+
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return path;
     }
 

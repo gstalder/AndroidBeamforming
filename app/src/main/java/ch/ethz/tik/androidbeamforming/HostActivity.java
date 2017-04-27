@@ -3,8 +3,6 @@ package ch.ethz.tik.androidbeamforming;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.net.wifi.WpsInfo;
-import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pGroup;
@@ -15,13 +13,11 @@ import android.os.Bundle;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -29,7 +25,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -167,13 +162,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         stopReceiving.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v){
-                for (int i = 0; i < socketToFileList.size(); i++)
-                    socketToFileList.get(i).Stop();
-                try {
-                    serverSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                stopAndClose();
             }
 
         });
@@ -197,7 +186,9 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         super.onPause();
         unregisterReceiver(mHostReceiver);
     }
+
     protected void onStop() {
+        stopAndClose();
         disconnect();
         deletePersistentGroups();
         super.onStop();
@@ -205,6 +196,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     }
 
     protected void onDestroy() {
+        stopAndClose();
         disconnect();
         deletePersistentGroups();
         super.onDestroy();
@@ -323,4 +315,15 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
         return format.format(curDate);
     }
+
+    private void stopAndClose(){
+        for (int i = 0; i < socketToFileList.size(); i++)
+            socketToFileList.get(i).Stop();
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
