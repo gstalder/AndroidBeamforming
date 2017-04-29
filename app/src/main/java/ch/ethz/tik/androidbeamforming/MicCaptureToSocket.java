@@ -59,6 +59,11 @@ public class MicCaptureToSocket {
     public void stop() {
         isRunning = false;
         recorder.stopRecording();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void writeAudioDataToSocket() {

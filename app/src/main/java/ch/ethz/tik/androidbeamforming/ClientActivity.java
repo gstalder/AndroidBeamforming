@@ -128,6 +128,7 @@ public class ClientActivity extends AppCompatActivity {
     }
 
     protected void onStop() {
+        micCaptureToSocket.stop();
         //unregisterReceiver(mClientReceiver);
         disconnect();
         deletePersistentGroups();
@@ -135,6 +136,7 @@ public class ClientActivity extends AppCompatActivity {
     }
 
     protected void onDestroy() {
+        micCaptureToSocket.stop();
         disconnect();
         deletePersistentGroups();
         super.onDestroy();
@@ -272,4 +274,5 @@ public class ClientActivity extends AppCompatActivity {
             });
         }
     }
+
 }
