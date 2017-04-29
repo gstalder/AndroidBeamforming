@@ -66,9 +66,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     public void setOwnDevice (WifiP2pDevice device){
         ownDevice = device;
         ownDeviceName = device.deviceName;
-        ownDevice.secondaryDeviceType = "host";
         TextView textView = (TextView) findViewById(R.id.ownName);
-        textView.setText("Your Name is " + this.ownDeviceName + " " + this.ownDevice.secondaryDeviceType);
+        textView.setText("Your Name is " + this.ownDeviceName);
     }
 
     @Override
@@ -177,7 +176,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
             public void onClick(View v){
                 stopAndClose();
             }
-
         });
 
     }

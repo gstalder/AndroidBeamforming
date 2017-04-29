@@ -51,6 +51,7 @@ public class ClientActivity extends AppCompatActivity {
     private Button discPeers;
     private Button startTransmitting;
     private TextView connectedTo;
+    public static TextView clientStatus;
     private ViewFlipper viewFlipper;
 
 
@@ -82,6 +83,7 @@ public class ClientActivity extends AppCompatActivity {
         discPeers = (Button) this.findViewById(R.id.discPeers);
         startTransmitting = (Button) this.findViewById(R.id.startTransmitting);
         connectedTo = (TextView) this.findViewById(R.id.connectedTo);
+        clientStatus = (TextView) this.findViewById(R.id.clientStatus);
         viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
 
@@ -100,7 +102,7 @@ public class ClientActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(hostAddress != null) {
-
+                    clientStatus.setText("waiting for start from host");
                     micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
                     udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION);
 
@@ -113,11 +115,8 @@ public class ClientActivity extends AppCompatActivity {
                         }
                     }, "Waiting for START from Server Thread");
                     waitForStartThread.start();
-
                 }
-
             }
-
         });
     }
 
