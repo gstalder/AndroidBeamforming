@@ -55,6 +55,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private String filename;
     private int clientNumber = 1;
 
+    private UDPBroadcast udpBroadcast;
+
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
     }
