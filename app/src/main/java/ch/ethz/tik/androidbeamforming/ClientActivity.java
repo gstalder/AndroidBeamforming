@@ -94,6 +94,11 @@ public class ClientActivity extends AppCompatActivity {
                 if(hostAddress != null) {
 
                     micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
+                    /*if (socket != null)
+                        while (no start signal from host)
+                            wait
+                        micCaputreToSocketStart();
+                     */
                     micCaptureToSocket.start();
 
                 }
