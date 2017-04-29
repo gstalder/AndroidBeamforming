@@ -92,12 +92,11 @@ public class UDPBroadcast {
 
                     byte[] receivedData = listenPacket.getData();
                     if(receivedData.equals(listenData)) hasReceived = true;
-                    textView.setText("UDP arrived " + hasReceived);
+                    textView.setText("UDP received: " + receivedData.toString());
                 }
             }
-        }, "Connection Accepting Thread");
+        }, "Listening Thread");
         listenThread.start();
-
     }
 
     public boolean checkReceived() {
