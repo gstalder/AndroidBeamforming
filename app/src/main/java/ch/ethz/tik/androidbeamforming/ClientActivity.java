@@ -43,6 +43,10 @@ public class ClientActivity extends AppCompatActivity {
     String hostName;
     public InetAddress hostAddress;
 
+    private Thread waitForStartThread;
+
+    private UDPBroadcast udpBroadcast;
+
     //layout elements
     private Button discPeers;
     private Button startTransmitting;
@@ -80,6 +84,10 @@ public class ClientActivity extends AppCompatActivity {
         connectedTo = (TextView) this.findViewById(R.id.connectedTo);
         viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
+
+        udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
+
+
         discPeers.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "start discovering peers");
@@ -94,12 +102,17 @@ public class ClientActivity extends AppCompatActivity {
                 if(hostAddress != null) {
 
                     micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
-                    /*if (socket != null)
-                        while (no start signal from host)
-                            wait
-                        micCaputreToSocketStart();
-                     */
-                    micCaptureToSocket.start();
+                    udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION);
+
+                    waitForStartThread = new Thread(new Runnable() {
+                        public void run() {
+
+                            while(!udpBroadcast.checkReceived());
+
+                            micCaptureToSocket.start();
+                        }
+                    }, "Waiting for START from Server Thread");
+                    waitForStartThread.start();
 
                 }
 

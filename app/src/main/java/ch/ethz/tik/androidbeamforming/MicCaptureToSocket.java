@@ -27,11 +27,12 @@ public class MicCaptureToSocket {
     public MicCaptureToSocket (InetAddress host, int port) {
         this.host = host;
         this.port = port;
+        recorder = new MicCapture();
     }
 
     public void start() {
 
-        recorder = new MicCapture();
+
         if (isRunning) return;
         isRunning = true;
 
@@ -46,8 +47,6 @@ public class MicCaptureToSocket {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
 
                 writeAudioDataToSocket();
             }

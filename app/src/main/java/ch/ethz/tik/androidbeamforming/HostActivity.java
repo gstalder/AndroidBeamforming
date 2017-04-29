@@ -32,6 +32,8 @@ import java.util.Locale;
 
 public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
 
+    //TODO muss hier nur der serversocket geschlossen werden oder auch alle sockets zu den clients? reicht "einseitiges" schliessen?
+
     private WifiP2pManager mHostManager;
     WifiP2pManager.Channel mHostChannel;
     BroadcastReceiver mHostReceiver;
@@ -53,7 +55,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private List<SocketToFile> socketToFileList;
     private Thread connectionAcceptThread;
     private String filename;
-    private int clientNumber = 1;
+    private int clientNumber = 0;
 
     private UDPBroadcast udpBroadcast;
 
@@ -100,6 +102,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         socketToFileList = new ArrayList<>();
         filename = getFilename();
 
+        udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
+
         showConn = (Button) this.findViewById(R.id.showConn);
         startReceiving = (Button) this.findViewById(R.id.startReceiving);
         stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
@@ -111,11 +115,16 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 while(isAcceptingConnections) {
                     try {
                         Socket newClient = serverSocket.accept();
-                        socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
+                        clientNumber++;
+                        if(isAcceptingConnections)
+                            socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
+
+                        //TODO evtl hier gleich serversocket in "else" schliessen. die sockets bleiben moeglicherweise erhalten???
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    clientNumber++;
+
                 }
 
             }
@@ -155,8 +164,12 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
             @Override
             public void onClick(View v){
                 isAcceptingConnections = false;
+                //TODO evtl hier serversocket schliessen?
+
                 for (int i = 0; i < socketToFileList.size(); i++)
                     socketToFileList.get(i).Start();
+
+                udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION);
 
             }
         });
