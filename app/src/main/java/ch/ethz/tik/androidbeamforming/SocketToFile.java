@@ -51,9 +51,6 @@ public class SocketToFile {
             e.printStackTrace();
         }
 
-
-
-
         writeThread = new Thread(new Runnable() {
             //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO); //MAY HELP???
             public void run() {
