@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/ownName"
-        android:layout_width="109dp"
+        android:layout_width="250dp"
         android:layout_height="46dp"
         android:layout_marginTop="41dp"
         android:text="TextView"

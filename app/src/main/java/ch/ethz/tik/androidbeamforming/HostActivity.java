@@ -64,13 +64,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     }
 
     public void setOwnDevice (WifiP2pDevice device){
-        this.ownDevice = device;
-    }
-
-    public void setOwnDeviceName(String name){
-        this.ownDeviceName = name;
+        ownDevice = device;
+        ownDeviceName = device.deviceName;
+        ownDevice.secondaryDeviceType = "host";
         TextView textView = (TextView) findViewById(R.id.ownName);
-        textView.setText("Your Name is " + this.ownDeviceName);
+        textView.setText("Your Name is " + this.ownDeviceName + " " + this.ownDevice.secondaryDeviceType);
     }
 
     @Override
