@@ -1,5 +1,6 @@
 package ch.ethz.tik.androidbeamforming;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -58,6 +59,7 @@ public class UDPBroadcast {
 
                 try {
                     socket.send(finalSendPacket);
+                    Log.d("UDP Broadcast", "packet sent");
                     textView.setText("Status: UDP package sent");
                 } catch (IOException e) {
                     e.printStackTrace();
