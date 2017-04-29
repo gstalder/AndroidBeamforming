@@ -10,17 +10,26 @@ import java.net.SocketException;
  * Created by Jonas Stehli on 4/29/2017.
  */
 
-public class UDPConnection {
+public class UDPBroadcast {
 
     DatagramSocket socket;
-    InetAddress localAddress;
-    InetAddress broadcastAddress;
     int port = 0;
 
-    public void broadcast (String message) {
+    public UDPBroadcast(int port) {
+        this.port = port;
+
+        try {
+            socket = new DatagramSocket(port);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void send (String message) {
 
         byte[] sendData = message.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcastAddress, port);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, port);
 
         try {
             socket.setBroadcast(true);
@@ -34,9 +43,11 @@ public class UDPConnection {
             e.printStackTrace();
         }
 
-    }
-
-    public void send (String message, InetAddress host) {
+        try {
+            socket.setBroadcast(false);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
 
     }
 
