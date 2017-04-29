@@ -48,6 +48,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private Button startReceiving;
     private Button stopReceiving;
     private Button resetConnections;
+    private Button udpTest;
+    public TextView udpStatus;
     private WifiP2pDevice ownDevice;
     private String ownDeviceName;
 
@@ -105,6 +107,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         startReceiving = (Button) this.findViewById(R.id.startReceiving);
         stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
         resetConnections = (Button) this.findViewById(R.id.resetConnections);
+        udpTest = (Button) this.findViewById(R.id.udpTest);
+        udpStatus = (TextView) this.findViewById(R.id.udpStatus);
 
         connectionAcceptThread = new Thread(new Runnable() {
             public void run() {
@@ -166,7 +170,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 for (int i = 0; i < socketToFileList.size(); i++)
                     socketToFileList.get(i).Start();
 
-                udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION);
+                udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, udpStatus);
 
             }
         });
@@ -175,6 +179,14 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
             @Override
             public void onClick(View v){
                 stopAndClose();
+            }
+        });
+
+        udpTest.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                udpStatus.setText("Status: trying to send");
+                udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, udpStatus);
             }
         });
 

@@ -73,7 +73,7 @@ public class ClientDirectBroadcastReceiver extends BroadcastReceiver {
             NetworkInfo networkInfo = (NetworkInfo) intent
                     .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
-            if (networkInfo.isConnected()) {
+            //if (networkInfo.isConnected()) {
                 mClientManager.requestConnectionInfo(mClientChannel,new WifiP2pManager.ConnectionInfoListener() {
                             @Override
                             public void onConnectionInfoAvailable(WifiP2pInfo info) {
@@ -84,10 +84,10 @@ public class ClientDirectBroadcastReceiver extends BroadcastReceiver {
                             }
                         }
                 );
-            }
-            else{
+            //}
+            /*else{
                 Log.d(TAG, "networkInfo false");
-            }
+            }*/
 
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             // Respond to this device's wifi state changing

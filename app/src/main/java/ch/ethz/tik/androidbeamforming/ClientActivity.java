@@ -50,8 +50,10 @@ public class ClientActivity extends AppCompatActivity {
     //layout elements
     private Button discPeers;
     private Button startTransmitting;
+    private Button udpTest;
     private TextView connectedTo;
-    public  TextView clientStatus;
+    public TextView clientStatus;
+    public TextView udpStatus;
     private ViewFlipper viewFlipper;
 
 
@@ -82,8 +84,10 @@ public class ClientActivity extends AppCompatActivity {
         // get Layout Elements
         discPeers = (Button) this.findViewById(R.id.discPeers);
         startTransmitting = (Button) this.findViewById(R.id.startTransmitting);
+        udpTest = (Button) this.findViewById(R.id.udpTest);
         connectedTo = (TextView) this.findViewById(R.id.connectedTo);
         clientStatus = (TextView) this.findViewById(R.id.clientStatus);
+        udpStatus = (TextView) this.findViewById(R.id.udpStatus);
         viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
 
@@ -115,6 +119,15 @@ public class ClientActivity extends AppCompatActivity {
                     }, "Waiting for START from Server Thread");
                     waitForStartThread.start();
                 }
+                else Toast.makeText(ClientActivity.this, "no host!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        udpTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                udpStatus.setText("UDP status: waiting for receiving");
+                udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, udpStatus);
             }
         });
     }

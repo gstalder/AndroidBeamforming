@@ -51,6 +51,8 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"></ListView>
 
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -81,6 +83,22 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:text="Status: start transmission"/>
+
+            <Button
+                android:id="@+id/udpTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="Test UDP (you're the receiver)" />
+
+            <TextView
+                android:id="@+id/udpStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="UDP Status: nothing received" />
 
         </LinearLayout>
 

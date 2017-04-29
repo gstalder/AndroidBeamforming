@@ -33,13 +33,12 @@
         android:id="@+id/ownName"
         android:layout_width="250dp"
         android:layout_height="46dp"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resetConnections"
-        app:layout_constraintHorizontal_bias="0.501" />
+        app:layout_constraintTop_toBottomOf="@+id/resetConnections" />
 
     <Button
         android:id="@+id/startReceiving"
@@ -48,7 +47,7 @@
         android:layout_height="60dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="9dp"
         app:layout_constraintTop_toBottomOf="@+id/peersStatus_listview" />
 
     <Button
@@ -57,7 +56,7 @@
         android:layout_width="150dp"
         android:layout_height="60dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="9dp"
         app:layout_constraintTop_toBottomOf="@+id/peersStatus_listview"
         app:layout_constraintLeft_toRightOf="@+id/startReceiving"
         android:layout_marginLeft="8dp"
@@ -68,13 +67,33 @@
         android:layout_width="313dp"
         android:layout_height="150dp"
         android:layout_marginLeft="27dp"
-        android:layout_marginTop="26dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ownName"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"></ListView>
+        app:layout_constraintTop_toBottomOf="@+id/ownName"></ListView>
 
+    <Button
+        android:id="@+id/udpTest"
+        android:layout_width="149dp"
+        android:layout_height="61dp"
+        android:text="Test UDP (you send)"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/startReceiving"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/udpStatus"
+        android:layout_width="150dp"
+        android:layout_height="62dp"
+        android:text="Status: nothing sent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/stopReceiving"
+        app:layout_constraintLeft_toRightOf="@+id/udpTest"
+        android:layout_marginLeft="51dp"
+        tools:layout_editor_absoluteY="391dp" />
 
 
 </android.support.constraint.ConstraintLayout>

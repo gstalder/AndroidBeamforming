@@ -2,6 +2,8 @@ package ch.ethz.tik.androidbeamforming;
 
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -32,7 +34,7 @@ public class UDPBroadcast {
 
     }
 
-    public void send (String message) {
+    public void send (String message, final TextView textView) {
 
         byte[] sendData = message.getBytes();
         DatagramPacket sendPacket = null;
@@ -56,6 +58,7 @@ public class UDPBroadcast {
 
                 try {
                     socket.send(finalSendPacket);
+                    textView.setText("Status: UDP package sent");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -91,7 +94,6 @@ public class UDPBroadcast {
                     if(receivedData.equals(listenData)) hasReceived = true;
                     textView.setText("UDP arrived " + hasReceived);
                 }
-
             }
         }, "Connection Accepting Thread");
         listenThread.start();
