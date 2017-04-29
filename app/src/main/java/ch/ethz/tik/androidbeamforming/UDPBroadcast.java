@@ -87,7 +87,6 @@ public class UDPBroadcast {
 
                     byte[] receivedData = listenPacket.getData();
                     if(receivedData.equals(listenData)) hasReceived = true;
-                    if(receivedData == listenData) hasReceived = true;
                     ClientActivity.clientStatus.setText("UDP arrived " + hasReceived);
                 }
 
