@@ -86,7 +86,7 @@ public class UDPBroadcast {
                     }
 
                     byte[] receivedData = listenPacket.getData();
-                    if(receivedData == listenData) hasReceived = true;
+                    if(receivedData.equals(listenData)) hasReceived = true;
                 }
 
             }
