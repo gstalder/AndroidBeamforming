@@ -3,7 +3,9 @@ package ch.ethz.tik.androidbeamforming;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * Created by Jonas Stehli on 4/29/2017.
@@ -31,8 +33,14 @@ public class UDPBroadcast {
     public void send (String message) {
 
         byte[] sendData = message.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(
-                sendData, sendData.length, port);
+        DatagramPacket sendPacket = null;
+        try {
+            sendPacket = new DatagramPacket(
+                    sendData, sendData.length,
+                    InetAddress.getByName("255.255.255.255"), port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         try {
             socket.setBroadcast(true);
@@ -40,11 +48,19 @@ public class UDPBroadcast {
             e.printStackTrace();
         }
 
-        try {
-            socket.send(sendPacket);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        final DatagramPacket finalSendPacket = sendPacket;
+        Thread sendThread = new Thread(new Runnable() {
+            public void run() {
+
+                try {
+                    socket.send(finalSendPacket);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, "Send Thread");
+        sendThread.start();
 
         try {
             socket.setBroadcast(false);
