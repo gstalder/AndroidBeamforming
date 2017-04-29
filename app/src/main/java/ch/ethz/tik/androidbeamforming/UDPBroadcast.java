@@ -95,7 +95,6 @@ public class UDPBroadcast {
             }
         }, "Listening Thread");
         listenThread.start();
-
     }
 
     public boolean checkReceived() {

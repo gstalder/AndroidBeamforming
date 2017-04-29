@@ -167,7 +167,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                     socketToFileList.get(i).Start();
 
                 udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION);
-
             }
         });
 
