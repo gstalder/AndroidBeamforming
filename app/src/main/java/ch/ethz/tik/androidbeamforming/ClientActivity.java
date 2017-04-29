@@ -51,7 +51,7 @@ public class ClientActivity extends AppCompatActivity {
     private Button discPeers;
     private Button startTransmitting;
     private TextView connectedTo;
-    public static TextView clientStatus;
+    public  TextView clientStatus;
     private ViewFlipper viewFlipper;
 
 
@@ -100,11 +100,10 @@ public class ClientActivity extends AppCompatActivity {
         startTransmitting.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-
+                clientStatus.setText("waiting for start from host");
                 if(hostAddress != null) {
-                    clientStatus.setText("waiting for start from host");
                     micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
-                    udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION);
+                    udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, clientStatus);
 
                     waitForStartThread = new Thread(new Runnable() {
                         public void run() {

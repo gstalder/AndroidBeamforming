@@ -1,5 +1,7 @@
 package ch.ethz.tik.androidbeamforming;
 
+import android.widget.TextView;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -70,7 +72,7 @@ public class UDPBroadcast {
 
     }
 
-    public void listenFor (final String message) {
+    public void listenFor (final String message, final TextView textView) {
 
         final byte[] listenData = message.getBytes();
         final DatagramPacket listenPacket = new DatagramPacket(listenData, listenData.length);
@@ -87,7 +89,7 @@ public class UDPBroadcast {
 
                     byte[] receivedData = listenPacket.getData();
                     if(receivedData.equals(listenData)) hasReceived = true;
-                    ClientActivity.clientStatus.setText("UDP arrived " + hasReceived);
+                    textView.setText("UDP arrived " + hasReceived);
                 }
 
             }
