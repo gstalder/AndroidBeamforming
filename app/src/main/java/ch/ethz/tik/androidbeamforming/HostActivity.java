@@ -51,9 +51,10 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private Button resetConnections;
     private Button udpTest;
     public TextView udpStatus;
+    public TextView ownName;
     private WifiP2pDevice ownDevice;
     private String ownDeviceName;
-    public InetAddress ownAddress;
+    public InetAddress hostAddress;
 
     private ServerSocket serverSocket;
     private List<SocketToFile> socketToFileList;
@@ -70,8 +71,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     public void setOwnDevice (WifiP2pDevice device){
         ownDevice = device;
         ownDeviceName = device.deviceName;
-        TextView textView = (TextView) findViewById(R.id.ownName);
-        textView.setText("Your Name is " + this.ownDeviceName);
+        ownName = (TextView) findViewById(R.id.ownName);
+        ownName.setText("Your Name is " + this.ownDeviceName);
     }
 
     @Override
@@ -117,7 +118,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
                 while(isAcceptingConnections) {
                     try {
+                        Log.d(TAG, "before accept");
                         Socket newClient = serverSocket.accept();
+                        Log.d(TAG, "socket accepted");
+                        setHostAddress();
+                        ownName.append(" Client Address: " + newClient.getInetAddress() + " GroupOwner: " + hostAddress);
                         clientNumber++;
                         if(isAcceptingConnections)
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
@@ -296,8 +301,16 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         }
     }
 
-    public void getGroupInfo (){
-        //mHostManager.
+    public void setHostAddress(){
+        mHostManager.requestConnectionInfo(mHostChannel,new WifiP2pManager.ConnectionInfoListener() {
+                    @Override
+                    public void onConnectionInfoAvailable(WifiP2pInfo info) {
+                        if (info != null) {
+                            hostAddress = info.groupOwnerAddress;
+                        }
+                    }
+                }
+        );
     }
 
     public void disconnect() {

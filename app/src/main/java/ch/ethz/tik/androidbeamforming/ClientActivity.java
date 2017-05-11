@@ -104,9 +104,9 @@ public class ClientActivity extends AppCompatActivity {
         startTransmitting.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                clientStatus.setText("waiting for start from host\n");
                 if(hostAddress != null) {
                     micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
+                    clientStatus.setText("waiting for start from host\n");
                     udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, clientStatus);
 
                     waitForStartThread = new Thread(new Runnable() {
