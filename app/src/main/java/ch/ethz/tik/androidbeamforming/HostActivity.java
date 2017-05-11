@@ -114,7 +114,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
                 while(isAcceptingConnections) {
                     try {
+                        Log.d(TAG, "before accept");
                         Socket newClient = serverSocket.accept();
+                        Log.d(TAG, "after accept");
+                        setHostAddress();
+                        ownName.append(" GroupOwnAddä: " + hostAddress);
                         clientNumber++;
                         if(isAcceptingConnections)
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
@@ -230,8 +234,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     public void setOwnDevice (WifiP2pDevice device){
         ownDevice = device;
         ownDeviceName = device.deviceName;
-        TextView textView = (TextView) findViewById(R.id.ownName);
-        textView.setText("Your Name is " + this.ownDeviceName);
+        ownName = (TextView) findViewById(R.id.ownName);
+        ownName.setText("Your Name is " + this.ownDeviceName);
     }
 
     public void discoverPeers () {
