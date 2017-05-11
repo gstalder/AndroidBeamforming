@@ -23,7 +23,7 @@
         android:id="@+id/resetConnections"
         android:layout_width="160dp"
         android:layout_height="68dp"
-        android:text="Reset Connections"
+        android:text="Reset Wifi Direct"
         android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"

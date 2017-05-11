@@ -75,7 +75,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
 
-        // Indicates a change in Wi-Fi P2P status
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         // Indicates a change in the list of available peers
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -91,6 +90,15 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peers = new ArrayList<>();
 
+
+
+
+
+
+
+
+
+
         try {
             serverSocket = new ServerSocket(MainActivity.PORT);
             Log.d(TAG, "server socket created");
@@ -100,7 +108,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         socketToFileList = new ArrayList<>();
         filename = getFilename();
 
-        udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
+        //udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
 
         showConn = (Button) this.findViewById(R.id.showConn);
         startReceiving = (Button) this.findViewById(R.id.startReceiving);
@@ -117,8 +125,9 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         Log.d(TAG, "before accept");
                         Socket newClient = serverSocket.accept();
                         Log.d(TAG, "after accept");
-                        setHostAddress();
-                        ownName.append(" GroupOwnAddä: " + hostAddress);
+
+                        ownName.append(" Your IP: " + newClient.getInetAddress() + "\n" +
+                                "WiFi P2P GO address is: " + hostAddress);
                         clientNumber++;
                         if(isAcceptingConnections)
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));

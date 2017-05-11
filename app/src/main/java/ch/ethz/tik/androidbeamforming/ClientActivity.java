@@ -107,8 +107,9 @@ public class ClientActivity extends AppCompatActivity {
                 if(hostAddress != null) {
                     micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
                     clientStatus.setText("waiting for start from host\n");
+                    micCaptureToSocket.start();
+                    /*
                     udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, clientStatus);
-
                     waitForStartThread = new Thread(new Runnable() {
                         public void run() {
 
@@ -118,8 +119,10 @@ public class ClientActivity extends AppCompatActivity {
                         }
                     }, "Waiting for START from Server Thread");
                     waitForStartThread.start();
+                */
                 }
                 else Toast.makeText(ClientActivity.this, "no host!", Toast.LENGTH_LONG).show();
+
             }
         });
 
