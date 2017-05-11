@@ -1,99 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ch.ethz.tik.androidbeamforming.HostActivity">
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/showConn"
-        android:text="Update Connections States"
-        android:layout_width="160dp"
-        android:layout_height="68dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="28dp"
-        app:layout_constraintRight_toLeftOf="@+id/resetConnections"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.4" />
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/resetConnections"
-        android:layout_width="160dp"
-        android:layout_height="68dp"
-        android:text="Reset Wifi Direct"
-        android:layout_marginRight="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="28dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/ownName"
-        android:layout_width="250dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resetConnections" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/startReceiving"
-        android:text="Start Receiving"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="9dp"
-        app:layout_constraintTop_toBottomOf="@+id/peersStatus_listview" />
+                <Button
+                    android:id="@+id/showConn"
+                    android:text="Update Connections States"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"/>
 
-    <Button
-        android:id="@+id/stopReceiving"
-        android:text="Stop Receiving"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="9dp"
-        app:layout_constraintTop_toBottomOf="@+id/peersStatus_listview"
-        app:layout_constraintLeft_toRightOf="@+id/startReceiving"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.733" />
+                <Button
+                    android:id="@+id/resetConnections"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:text="Reset Wifi Direct"
+                    android:layout_gravity="center"/>
 
-    <ListView
-        android:id="@+id/peersStatus_listview"
-        android:layout_width="313dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="27dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ownName"></ListView>
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/udpTest"
-        android:layout_width="149dp"
-        android:layout_height="61dp"
-        android:text="Test UDP (you send)"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/startReceiving"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+            <TextView
+                android:id="@+id/ownName"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:layout_gravity="center"/>
 
-    <TextView
-        android:id="@+id/udpStatus"
-        android:layout_width="150dp"
-        android:layout_height="62dp"
-        android:text="Status: nothing sent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/stopReceiving"
-        app:layout_constraintLeft_toRightOf="@+id/udpTest"
-        android:layout_marginLeft="51dp"
-        tools:layout_editor_absoluteY="391dp" />
+            <Button
+                android:id="@+id/startReceiving"
+                android:text="Start Receiving"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/stopReceiving"
+                android:text="Stop Receiving"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center" />
+
+            <ListView
+                android:id="@+id/peersStatus_listview"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"></ListView>
+
+            <Button
+                android:id="@+id/udpTest"
+                android:text="Test UDP (you send)"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/udpStatus"
+                android:text="Status: nothing sent"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center" />
 
 
-</android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+        </LinearLayout>
+
+
+    </ViewFlipper>
+
+
+</LinearLayout>

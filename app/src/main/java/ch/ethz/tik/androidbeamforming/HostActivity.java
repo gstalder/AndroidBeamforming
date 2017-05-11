@@ -69,12 +69,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Log.d(TAG, "host activity created");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
+        Log.d(TAG, "host activity created");
 
+        //WIFIP2P IMPLEMENTATION
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         // Indicates a change in the list of available peers
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -82,16 +81,22 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         // Indicates this device's details have changed
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-
-
         mHostManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mHostChannel = mHostManager.initialize(this, getMainLooper(), null);
         deletePersistentGroups();
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peers = new ArrayList<>();
 
+        //BUTTONS
+        showConn = (Button) this.findViewById(R.id.showConn);
+        startReceiving = (Button) this.findViewById(R.id.startReceiving);
+        stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
+        resetConnections = (Button) this.findViewById(R.id.resetConnections);
+        udpTest = (Button) this.findViewById(R.id.udpTest);
+        udpStatus = (TextView) this.findViewById(R.id.udpStatus);
 
-
+        registerReceiver(mHostReceiver, mIntentFilter);
+        discoverPeers();
 
 
 
@@ -110,12 +115,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
         //udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
 
-        showConn = (Button) this.findViewById(R.id.showConn);
-        startReceiving = (Button) this.findViewById(R.id.startReceiving);
-        stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
-        resetConnections = (Button) this.findViewById(R.id.resetConnections);
-        udpTest = (Button) this.findViewById(R.id.udpTest);
-        udpStatus = (TextView) this.findViewById(R.id.udpStatus);
+
 
         connectionAcceptThread = new Thread(new Runnable() {
             public void run() {
@@ -206,8 +206,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     @Override
     public void onStart(){
         super.onStart();
-        registerReceiver(mHostReceiver, mIntentFilter);
-        discoverPeers();
     }
 
     @Override
