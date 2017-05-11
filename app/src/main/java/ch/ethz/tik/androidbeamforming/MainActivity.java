@@ -6,12 +6,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
+import static android.Manifest.permission.CHANGE_NETWORK_STATE;
+import static android.Manifest.permission.CHANGE_WIFI_MULTICAST_STATE;
+import static android.Manifest.permission.CHANGE_WIFI_STATE;
 import static android.Manifest.permission.INTERNET;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.READ_PHONE_STATE;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -40,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (!checkPermission()){
-            requestPermission();
+        if (!checkPermissions()){
+            requestPermissions();
+            checkPermissions();
         }
 
         setAsHost = (Button) this.findViewById(R.id.setAsHost);
@@ -84,19 +93,67 @@ public class MainActivity extends AppCompatActivity {
         startActivity(hostIntent);
     }
 
-    private void requestPermission() {
+    private void requestPermissions() {
+        Log.d(TAG, "requesting permissions...");
         ActivityCompat.requestPermissions(MainActivity.this, new
-                String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO, INTERNET}, REQUEST_PERMISSION_CODE);
+                String[]{
+                INTERNET,
+                ACCESS_WIFI_STATE,
+                CHANGE_WIFI_STATE,
+                CHANGE_WIFI_MULTICAST_STATE,
+                ACCESS_NETWORK_STATE,
+                CHANGE_NETWORK_STATE,
+                READ_EXTERNAL_STORAGE,
+                WRITE_EXTERNAL_STORAGE,
+                RECORD_AUDIO,
+                READ_PHONE_STATE},
+                REQUEST_PERMISSION_CODE);
     }
 
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+    private boolean checkPermissions() {
+
+        Log.d(TAG, "Checking Permissions...");
+
+        int resultInternet = ContextCompat.checkSelfPermission(getApplicationContext(),
+                INTERNET);
+        int resultAccessWifiState = ContextCompat.checkSelfPermission(getApplicationContext(),
+                ACCESS_WIFI_STATE);
+        int resultChangeWifiState = ContextCompat.checkSelfPermission(getApplicationContext(),
+                CHANGE_WIFI_STATE);
+        int resultChangeWifiMulticastState = ContextCompat.checkSelfPermission(getApplicationContext(),
+                CHANGE_WIFI_MULTICAST_STATE);
+        int resultAccessNetworkState = ContextCompat.checkSelfPermission(getApplicationContext(),
+                ACCESS_NETWORK_STATE);
+        int resultChangeNetworkState = ContextCompat.checkSelfPermission(getApplicationContext(),
+                CHANGE_NETWORK_STATE);
+        int resultReadExternalStorage = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_EXTERNAL_STORAGE);
+        int resultWriteExternalStorage = ContextCompat.checkSelfPermission(getApplicationContext(),
                 WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+        int resultRecordAudio = ContextCompat.checkSelfPermission(getApplicationContext(),
                 RECORD_AUDIO);
-        //test
-        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);
-        return result == PackageManager.PERMISSION_GRANTED &&
-                result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED;
+        int resultReadPhoneState = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_PHONE_STATE);
+
+        int granted = PackageManager.PERMISSION_GRANTED;
+
+        boolean resultTotal = resultInternet == granted &&
+                resultAccessWifiState == granted &&
+                resultChangeWifiState == granted &&
+                resultChangeWifiMulticastState == granted &&
+                resultAccessNetworkState == granted &&
+                resultChangeNetworkState == granted &&
+                resultReadExternalStorage == granted &&
+                resultWriteExternalStorage == granted &&
+                resultRecordAudio == granted &&
+                resultReadPhoneState == granted;
+
+        if(resultTotal)
+            Log.d(TAG, "all permissions are granted");
+        else
+            Log.d(TAG, "not all permissions are available");
+
+        return resultTotal;
+
     }
 }
