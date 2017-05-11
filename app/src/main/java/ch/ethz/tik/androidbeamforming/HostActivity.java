@@ -182,7 +182,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 for (int i = 0; i < socketToFileList.size(); i++)
                     socketToFileList.get(i).Start();
 
-                udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, udpStatus, HostActivity.this.getApplicationContext());
+                //udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, udpStatus, HostActivity.this.getApplicationContext());
             }
         });
 
@@ -197,7 +197,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
             @Override
             public void onClick(View v) {
                 udpStatus.setText("Status: trying to send");
-                udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, udpStatus, HostActivity.this.getApplicationContext());
+                //udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, udpStatus, HostActivity.this.getApplicationContext());
             }
         });
 

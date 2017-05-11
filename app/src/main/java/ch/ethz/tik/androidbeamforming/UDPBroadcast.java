@@ -40,15 +40,15 @@ public class UDPBroadcast {
 
     }
 
-    public void send (String message, final TextView textView, Context context) {
+    public void send (String message, final TextView textView, InetAddress address) {
 
         byte[] sendData = message.getBytes();
         DatagramPacket sendPacket = null;
         try {
             sendPacket = new DatagramPacket(
                     sendData, sendData.length,
-                    getBroadcastAddress(context), port);
-        } catch (IOException e) {
+                    /*getBroadcastAddress(context)*/ address, port);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -65,7 +65,7 @@ public class UDPBroadcast {
                 try {
                     socket.send(finalSendPacket);
                     Log.d("UDP Broadcast", "packet sent");
-                    textView.setText("Status: UDP package sent");
+                    //textView.setText("Status: UDP package sent");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

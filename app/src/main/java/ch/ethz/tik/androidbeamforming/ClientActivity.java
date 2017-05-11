@@ -193,6 +193,7 @@ public class ClientActivity extends AppCompatActivity {
                             + "Calculated Broadcast Address: " + tempBroad);
                         }
                     });
+
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
