@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 WRITE_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
                 RECORD_AUDIO);
+        //test
         int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);
         return result == PackageManager.PERMISSION_GRANTED &&
                 result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED;
