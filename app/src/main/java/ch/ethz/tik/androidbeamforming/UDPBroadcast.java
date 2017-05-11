@@ -1,7 +1,11 @@
 package ch.ethz.tik.androidbeamforming;
 
+import android.content.Context;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -18,7 +22,6 @@ import java.net.UnknownHostException;
 
 public class UDPBroadcast {
 
-    //test
 
     private DatagramSocket socket;
     private Thread listenThread;
@@ -37,15 +40,15 @@ public class UDPBroadcast {
 
     }
 
-    public void send (String message, final TextView textView) {
+    public void send (String message, final TextView textView, Context context) {
 
         byte[] sendData = message.getBytes();
         DatagramPacket sendPacket = null;
         try {
             sendPacket = new DatagramPacket(
                     sendData, sendData.length,
-                    InetAddress.getByName("255.255.255.255"), port);
-        } catch (UnknownHostException e) {
+                    getBroadcastAddress(context), port);
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -101,6 +104,20 @@ public class UDPBroadcast {
             }
         }, "Listening Thread");
         listenThread.start();
+    }
+
+    InetAddress getBroadcastAddress(Context context) throws IOException {
+
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+        // handle null somehow
+
+        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+        byte[] quads = new byte[4];
+        for (int k = 0; k < 4; k++)
+            quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+        Toast.makeText(context, "" + InetAddress.getByAddress(quads), Toast.LENGTH_LONG).show();
+        return InetAddress.getByAddress(quads);
     }
 
     public boolean checkReceived() {

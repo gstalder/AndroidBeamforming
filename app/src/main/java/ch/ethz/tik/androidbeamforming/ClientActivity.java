@@ -128,6 +128,8 @@ public class ClientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 udpStatus.setText("UDP status: waiting for receiving");
                 udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, udpStatus);
+                getHostAddress();
+                connectedTo.append(" " + hostAddress);
             }
         });
     }
@@ -192,6 +194,7 @@ public class ClientActivity extends AppCompatActivity {
             public void onSuccess() {
                 hostName = peer.deviceName;
                 viewFlipper.showNext();
+                getHostAddress();
                 connectedTo.append(hostName);
             }
 
@@ -247,6 +250,18 @@ public class ClientActivity extends AppCompatActivity {
 
     public void setConnectionInfo (WifiP2pInfo info){
         hostAddress = info.groupOwnerAddress;
+    }
+
+    public void getHostAddress(){
+        mClientManager.requestConnectionInfo(mClientChannel,new WifiP2pManager.ConnectionInfoListener() {
+                    @Override
+                    public void onConnectionInfoAvailable(WifiP2pInfo info) {
+                        if (info != null) {
+                            hostAddress = info.groupOwnerAddress;
+                        }
+                    }
+                }
+        );
     }
 
     private void deletePersistentGroups(){
