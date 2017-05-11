@@ -33,6 +33,8 @@ import java.util.Locale;
 
 public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
 
+    private static String TAG = HostActivity.class.getSimpleName();
+
     //TODO muss hier nur der serversocket geschlossen werden oder auch alle sockets zu den clients? reicht "einseitiges" schliessen?
 
     private WifiP2pManager mHostManager;
@@ -43,7 +45,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private boolean isAcceptingConnections = true;
     private final IntentFilter mIntentFilter = new IntentFilter();
     private List<WifiP2pDevice> peers;
-    private static String TAG = HostActivity.class.getSimpleName();
 
     private Button showConn;
     private Button startReceiving;
@@ -64,19 +65,13 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
     private UDPBroadcast udpBroadcast;
 
-    public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
-        this.isWifiP2pEnabled = isWifiP2pEnabled;
-    }
 
-    public void setOwnDevice (WifiP2pDevice device){
-        ownDevice = device;
-        ownDeviceName = device.deviceName;
-        ownName = (TextView) findViewById(R.id.ownName);
-        ownName.setText("Your Name is " + this.ownDeviceName);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d(TAG, "host activity created");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
 
@@ -98,6 +93,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
         try {
             serverSocket = new ServerSocket(MainActivity.PORT);
+            Log.d(TAG, "server socket created");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,11 +114,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
                 while(isAcceptingConnections) {
                     try {
-                        Log.d(TAG, "before accept");
                         Socket newClient = serverSocket.accept();
-                        Log.d(TAG, "socket accepted");
-                        setHostAddress();
-                        ownName.append(" Client Address: " + newClient.getInetAddress() + " GroupOwner: " + hostAddress);
                         clientNumber++;
                         if(isAcceptingConnections)
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
@@ -229,6 +221,17 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         disconnect();
         deletePersistentGroups();
         super.onDestroy();
+    }
+
+    public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
+        this.isWifiP2pEnabled = isWifiP2pEnabled;
+    }
+
+    public void setOwnDevice (WifiP2pDevice device){
+        ownDevice = device;
+        ownDeviceName = device.deviceName;
+        TextView textView = (TextView) findViewById(R.id.ownName);
+        textView.setText("Your Name is " + this.ownDeviceName);
     }
 
     public void discoverPeers () {
