@@ -49,7 +49,6 @@ public class ClientActivity extends AppCompatActivity {
 
     //layout elements
     private Button discPeers;
-    private Button startTransmitting;
     private Button udpTest;
     private TextView connectedTo;
     public TextView clientStatus;
@@ -83,7 +82,6 @@ public class ClientActivity extends AppCompatActivity {
 
         // get Layout Elements
         discPeers = (Button) this.findViewById(R.id.discPeers);
-        startTransmitting = (Button) this.findViewById(R.id.startTransmitting);
         udpTest = (Button) this.findViewById(R.id.udpTest);
         connectedTo = (TextView) this.findViewById(R.id.connectedTo);
         clientStatus = (TextView) this.findViewById(R.id.clientStatus);
@@ -101,6 +99,7 @@ public class ClientActivity extends AppCompatActivity {
             }
         });
 
+        /*
         startTransmitting.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -108,7 +107,7 @@ public class ClientActivity extends AppCompatActivity {
                     micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
                     clientStatus.setText("waiting for start from host\n");
                     micCaptureToSocket.start();
-                    /*
+
                     udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, clientStatus);
                     waitForStartThread = new Thread(new Runnable() {
                         public void run() {
@@ -119,12 +118,12 @@ public class ClientActivity extends AppCompatActivity {
                         }
                     }, "Waiting for START from Server Thread");
                     waitForStartThread.start();
-                */
+
                 }
                 else Toast.makeText(ClientActivity.this, "no host!", Toast.LENGTH_LONG).show();
 
             }
-        });
+        });*/
 
         udpTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +136,8 @@ public class ClientActivity extends AppCompatActivity {
         });
     }
 
+
+    //Activity Lifecycle Methods ------------------------------------------------------
     @Override
     protected void onStart() {
         super.onStart();
@@ -171,6 +172,19 @@ public class ClientActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //TCP, UDP Methods
+
+    public void setAllConnections() {
+        while (hostAddress == null) {
+            getHostAddress();
+            Log.d(TAG, "current WifiP2p host Address:" + hostAddress);
+        }
+        clientStatus.append("WifiP2p GO address: " + hostAddress);
+    }
+
+
+    //WiFiP2p Methods---------------------------------------------------------------------------
+
     public void discoverPeers () {
         mClientManager.discoverPeers(mClientChannel, new WifiP2pManager.ActionListener() {
 
@@ -199,6 +213,7 @@ public class ClientActivity extends AppCompatActivity {
                 viewFlipper.showNext();
                 getHostAddress();
                 connectedTo.append(hostName);
+                setAllConnections();
             }
 
             @Override

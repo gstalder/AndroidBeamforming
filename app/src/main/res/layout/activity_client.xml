@@ -68,21 +68,13 @@
                 android:layout_marginTop="16dp"
                 android:text="CONNECTED TO: " />
 
-            <Button
-                android:id="@+id/startTransmitting"
-                android:layout_width="150dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:text="Start Transmitting" />
-
             <TextView
                 android:id="@+id/clientStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="Status: start transmission"/>
+                android:text=" "/>
 
             <Button
                 android:id="@+id/udpTest"
