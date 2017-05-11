@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -172,14 +175,44 @@ public class ClientActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    //TCP, UDP Methods
+    //TCP, UDP Methods-------------------------------------------------------------------------------------------------
 
     public void setAllConnections() {
-        while (hostAddress == null) {
-            getHostAddress();
-            Log.d(TAG, "current WifiP2p host Address:" + hostAddress);
-        }
-        clientStatus.append("WifiP2p GO address: " + hostAddress);
+        Thread waitForHostAddress = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (hostAddress == null) {
+                        getHostAddress();
+                    }
+                    final InetAddress tempBroad = getBroadcastAddress();
+                    runOnUiThread(new Runnable()  {
+                        @Override
+                        public void run() {
+                            clientStatus.append("WifiP2p GO address: " + hostAddress.getHostAddress() + "\n"
+                            + "Calculated Broadcast Address: " + tempBroad);
+                        }
+                    });
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, "waitForHostAddress_Thread");
+        waitForHostAddress.start();
+    }
+
+    //temporary function for Testing
+    InetAddress getBroadcastAddress() throws IOException {
+        WifiManager wifi = (WifiManager) ClientActivity.this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+        // handle null somehow
+
+        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+        byte[] quads = new byte[4];
+        for (int k = 0; k < 4; k++)
+            quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+        return InetAddress.getByAddress(quads);
     }
 
 
