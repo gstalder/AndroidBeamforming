@@ -132,9 +132,17 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         Socket newClient = serverSocket.accept();
                         Log.d(TAG, "after accept");
 
-                        ownName.append("Your IP: " + newClient.getLocalAddress() + "\n" +
-                                "New Client: " + newClient.getInetAddress() + "\n" +
-                                "WiFi P2P GO address is: " + hostAddress + "\n");
+                        final InetAddress tempClientAddress = newClient.getLocalAddress();
+                        final InetAddress tempHostAddress = newClient.getInetAddress();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ownName.append("Your IP: " + tempClientAddress + "\n" +
+                                        "New Client: " + tempHostAddress + "\n" +
+                                        "WiFi P2P GO address is: " + hostAddress + "\n");
+                            }
+                        });
                         clientNumber++;
                         if(isAcceptingConnections) {
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
