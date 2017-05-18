@@ -198,16 +198,17 @@ public class ClientActivity extends AppCompatActivity {
                     sleep(5000); //in case host is slower
                     Log.d(TAG, "before micCaputure initialize");
                     micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
-                                      runOnUiThread(new Runnable() {
+                    sleep(1000);
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             clientStatus.append("\n" + "your Host: " + micCaptureToSocket.getInetAddress() +
-                                    "\n" + "onw Address" + micCaptureToSocket.getLocalAddress());
+                                    "\n" + "own Address: " + micCaptureToSocket.getLocalAddress());
                         }
                     });
 
                     // wait for start signal
-                    udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT, hostAddress);
+                    udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
                     udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, udpTest);
                     Log.d(TAG, "after listen for");
 
@@ -215,6 +216,7 @@ public class ClientActivity extends AppCompatActivity {
                     while(!udpBroadcast.checkReceived()){
                         sleep(1000);
                     }
+                    Log.d(TAG, " end of setAllConnections");
 
                 }catch(Exception e) {
                     e.printStackTrace();
