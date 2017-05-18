@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public final static int UDP_BROADCAST_PORT = 56790;
 
     // UDP strings, MUST be unique!
-    public final static String START_CLIENT_TRANSMISSION = "AAB_ST";
+    public final static String START_CLIENT_TRANSMISSION = "AABSTART";
+    public final static String STOP_CLIENT_TRANSMISSION = "AABSTOP";
 
     private static String TAG = MainActivity.class.getSimpleName();
     private Button setAsHost;
