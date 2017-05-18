@@ -100,11 +100,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         registerReceiver(mHostReceiver, mIntentFilter);
         discoverPeers();
 
-
-
-        //udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
-
-
+        udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
 
         connectionAcceptThread = new Thread(new Runnable() {
             public void run() {

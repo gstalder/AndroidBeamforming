@@ -26,11 +26,11 @@ public class UDPBroadcast {
     private boolean hasReceived = false;
     private int port = 0;
 
-    public UDPBroadcast(int port) {
+    public UDPBroadcast(int port, InetAddress address) {
         this.port = port;
 
         try {
-            socket = new DatagramSocket(port);
+            socket = new DatagramSocket(port, address);
         } catch (SocketException e) {
             e.printStackTrace();
         }
