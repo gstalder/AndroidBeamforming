@@ -202,6 +202,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
     }
 
+
+    //Life cycle methods --------------------------------------------------------------------------------------------------------
     @Override
     public void onStart(){
         super.onStart();
@@ -233,6 +235,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         super.onDestroy();
     }
 
+    // WifiP2p methods ---------------------------------------------------------------------------------------------------------------
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
     }
@@ -360,6 +363,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         }
     }
 
+    // TCP methods ---------------------------------------------------------------------------------------------------------------------
     private String getFilename() {
         Date curDate = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
