@@ -31,6 +31,8 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class ClientActivity extends AppCompatActivity {
 
     private WifiP2pManager mClientManager;
@@ -178,13 +180,16 @@ public class ClientActivity extends AppCompatActivity {
     //TCP, UDP Methods-------------------------------------------------------------------------------------------------
 
     public void setAllConnections() {
-        Thread waitForHostAddress = new Thread(new Runnable() {
+        final Thread waitForHostAddress = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (hostAddress == null) {
                         getHostAddress();
+                        Log.d(TAG, "current hostaddress: " + hostAddress);
+                        sleep(500);
                     }
+                    Log.d(TAG, "Host: " + hostAddress);
                     final InetAddress tempBroad = getBroadcastAddress();
                     runOnUiThread(new Runnable()  {
                         @Override
@@ -193,7 +198,12 @@ public class ClientActivity extends AppCompatActivity {
                             + "Calculated Broadcast Address: " + tempBroad);
                         }
                     });
+                    // connect to TCP
 
+                    // wait for start signal
+                    udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, udpTest);
+
+                    //start transmitting
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -232,6 +242,14 @@ public class ClientActivity extends AppCompatActivity {
                 Log.w(TAG, "Peers not discovered");
             }
         });
+        if (mClientManager != null) {
+            mClientManager.requestPeers(mClientChannel, new WifiP2pManager.PeerListListener() {
+                @Override
+                public void onPeersAvailable(WifiP2pDeviceList peers) {
+                    displayPeers(peers);
+                }
+            });
+        }
     }
 
     public void connect(final WifiP2pDevice peer) {
@@ -248,6 +266,7 @@ public class ClientActivity extends AppCompatActivity {
                 getHostAddress();
                 connectedTo.append(hostName);
                 setAllConnections();
+
             }
 
             @Override
