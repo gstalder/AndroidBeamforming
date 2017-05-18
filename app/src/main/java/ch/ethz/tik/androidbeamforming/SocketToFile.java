@@ -12,13 +12,12 @@ import java.net.Socket;
 
 /**
  * Created by Jonas Stehli on 4/16/2017.
- * Creates a Server Socket that receives Audio Data and writes it to a File
+ * Receives Audio Data from Socket and writes it to a File
  */
 
 public class SocketToFile {
 
     private Thread writeThread;
-    private ServerSocket serverSocket;
     private Socket client;
     private String path;
     private InputStream is;
