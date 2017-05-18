@@ -124,6 +124,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 }
 
                 socketToFileList = new ArrayList<>();
+                clientAddressList = new ArrayList<>();
                 filename = getFilename();
 
                 while(isAcceptingConnections) {
@@ -199,9 +200,9 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 }
 
 
-                for (int i = 0; i <= socketToFileList.size() - 1; i++)
+                for (int i = 0; i < socketToFileList.size(); i++)
                     socketToFileList.get(i).Start();
-                for (int i = 0; i <= clientAddressList.size() - 1; i++)
+                for (int i = 0; i < clientAddressList.size(); i++)
                     udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, clientAddressList.get(i));
             }
         });
