@@ -7,14 +7,11 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 
 /**
  * Created by Jonas Stehli on 4/29/2017.
@@ -40,21 +37,15 @@ public class UDPBroadcast {
 
     }
 
-    public void send (String message, final TextView textView, InetAddress address) {
+    public void send (String message, InetAddress address) {
 
         byte[] sendData = message.getBytes();
         DatagramPacket sendPacket = null;
         try {
             sendPacket = new DatagramPacket(
                     sendData, sendData.length,
-                    /*getBroadcastAddress(context)*/ address, port);
+                    address, port);
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            socket.setBroadcast(true);
-        } catch (SocketException e) {
             e.printStackTrace();
         }
 
@@ -64,8 +55,7 @@ public class UDPBroadcast {
 
                 try {
                     socket.send(finalSendPacket);
-                    Log.d("UDP Broadcast", "packet sent");
-                    //textView.setText("Status: UDP package sent");
+                    Log.d("UDP Broadcast", "start packet sent");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -73,12 +63,6 @@ public class UDPBroadcast {
             }
         }, "Send Thread");
         sendThread.start();
-
-        try {
-            socket.setBroadcast(false);
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
 
     }
 
