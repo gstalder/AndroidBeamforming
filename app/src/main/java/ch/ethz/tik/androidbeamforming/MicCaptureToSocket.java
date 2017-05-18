@@ -28,6 +28,11 @@ public class MicCaptureToSocket {
         this.host = host;
         this.port = port;
         recorder = new MicCapture();
+        try {
+            socket = new Socket(host,port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void start() {
@@ -40,11 +45,6 @@ public class MicCaptureToSocket {
         writeThread = new Thread(new Runnable() {
             //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO); //MAY HELP???
             public void run() {
-                try {
-                    socket = new Socket(host,port);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 writeAudioDataToSocket();
             }
         }, "AudioToSocket Thread");
