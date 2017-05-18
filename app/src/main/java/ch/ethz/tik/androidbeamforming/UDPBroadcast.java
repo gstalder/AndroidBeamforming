@@ -37,6 +37,18 @@ public class UDPBroadcast {
 
     }
 
+    // constructor for listening only!!
+    public UDPBroadcast(int port) {
+        this.port = port;
+
+        try {
+            socket = new DatagramSocket(port);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void send (String message, InetAddress address) {
 
         byte[] sendData = message.getBytes();

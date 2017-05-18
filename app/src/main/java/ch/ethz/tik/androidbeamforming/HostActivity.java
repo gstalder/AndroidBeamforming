@@ -190,9 +190,10 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                     Log.d(TAG, "SERVERSOCKET COULDNT BE CLOSED");
                 }
 
-                for (int i = 0; i < socketToFileList.size(); i++)
+
+                for (int i = 0; i <= socketToFileList.size() - 1; i++)
                     socketToFileList.get(i).Start();
-                for (int i = 0; i < clientAddressList.size(); i++)
+                for (int i = 0; i <= clientAddressList.size() - 1; i++)
                     udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, clientAddressList.get(i));
             }
         });
