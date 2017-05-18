@@ -22,6 +22,7 @@ public class UDPBroadcast {
 
     private DatagramSocket socket;
     private Thread listenThread;
+    private static String TAG = UDPBroadcast.class.getSimpleName();
 
     private boolean hasReceived = false;
     private int port = 0;
@@ -78,7 +79,7 @@ public class UDPBroadcast {
 
     }
 
-    public void listenFor (final String message, final TextView textView) {
+    public void listenFor (final String message) {
 
         final byte[] listenData = message.getBytes();
         final DatagramPacket listenPacket = new DatagramPacket(listenData, listenData.length);
@@ -94,8 +95,8 @@ public class UDPBroadcast {
                     }
 
                     byte[] receivedData = listenPacket.getData();
+                    Log.d(TAG, "Received data: " + receivedData.toString());
                     if(receivedData.equals(listenData)) hasReceived = true;
-                    textView.setText("UDP received: " + receivedData.toString());
                 }
             }
         }, "Listening Thread");

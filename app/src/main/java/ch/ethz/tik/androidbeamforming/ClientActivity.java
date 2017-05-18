@@ -131,7 +131,7 @@ public class ClientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 udpStatus.setText("UDP status: waiting for receiving");
-                udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, udpStatus);
+                udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION);
                 getHostAddress();
                 connectedTo.append(" " + hostAddress);
             }
@@ -209,13 +209,15 @@ public class ClientActivity extends AppCompatActivity {
 
                     // wait for start signal
                     udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
-                    udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, udpTest);
+                    udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION);
                     Log.d(TAG, "after listen for");
 
                     //start transmitting
                     while(!udpBroadcast.checkReceived()){
                         sleep(1000);
                     }
+                    micCaptureToSocket.start();
+
                     Log.d(TAG, " end of setAllConnections");
 
                 }catch(Exception e) {
