@@ -59,7 +59,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
     private ServerSocket serverSocket;
     private List<SocketToFile> socketToFileList;
-    private List<InetAddress> hostAddressList;
+    private List<InetAddress> clientAddressList;
     private Thread connectionAcceptThread;
     private String filename;
     private int clientNumber = 0;
@@ -84,6 +84,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
         mHostManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mHostChannel = mHostManager.initialize(this, getMainLooper(), null);
+
         deletePersistentGroups();
         mHostReceiver = new HostDirectBroadcastReceiver(mHostManager, mHostChannel, this);
         peers = new ArrayList<>();
@@ -99,14 +100,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         registerReceiver(mHostReceiver, mIntentFilter);
         discoverPeers();
 
-        try {
-            serverSocket = new ServerSocket(MainActivity.PORT);
-            Log.d(TAG, "server socket created");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        socketToFileList = new ArrayList<>();
-        filename = getFilename();
+
 
         //udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
 
@@ -115,18 +109,41 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         connectionAcceptThread = new Thread(new Runnable() {
             public void run() {
 
+                while(hostAddress == null){
+                    Log.d(TAG, "no host");
+                    getHostAddress();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Log.d(TAG, "Host: " + hostAddress);
+
+                try {
+                    serverSocket = new ServerSocket(MainActivity.PORT, 8, hostAddress);
+                    Log.d(TAG, "server socket created on " + hostAddress);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                socketToFileList = new ArrayList<>();
+                filename = getFilename();
+
                 while(isAcceptingConnections) {
                     try {
                         Log.d(TAG, "before accept");
                         Socket newClient = serverSocket.accept();
                         Log.d(TAG, "after accept");
 
-
-                        ownName.append(" Your IP: " + newClient.getInetAddress() + "\n" +
-                                "WiFi P2P GO address is: " + hostAddress);
+                        ownName.append("Your IP: " + newClient.getLocalAddress() + "\n" +
+                                "New Client: " + newClient.getInetAddress() + "\n" +
+                                "WiFi P2P GO address is: " + hostAddress + "\n");
                         clientNumber++;
                         if(isAcceptingConnections) {
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
+                            clientAddressList.add(newClient.getInetAddress());
                         }
 
                     } catch (IOException e) {
@@ -317,7 +334,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         }
     }
 
-    public void setHostAddress(){
+    public void getHostAddress(){
         mHostManager.requestConnectionInfo(mHostChannel,new WifiP2pManager.ConnectionInfoListener() {
                     @Override
                     public void onConnectionInfoAvailable(WifiP2pInfo info) {

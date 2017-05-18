@@ -101,4 +101,16 @@ public class MicCaptureToSocket {
         return bytes;
     }
 
+    public InetAddress getLocalAddress(){
+        if(socket != null)
+            return socket.getLocalAddress();
+        else return null;
+    }
+
+    public InetAddress getInetAddress(){
+        if(socket != null)
+            return socket.getInetAddress();
+        else return null;
+    }
+
 }
