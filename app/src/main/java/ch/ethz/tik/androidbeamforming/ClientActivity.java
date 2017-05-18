@@ -218,7 +218,6 @@ public class ClientActivity extends AppCompatActivity {
                     }
                     micCaptureToSocket.start();
 
-                    //end of function
                     Log.d(TAG, " end of setAllConnections");
 
                 }catch(Exception e) {
