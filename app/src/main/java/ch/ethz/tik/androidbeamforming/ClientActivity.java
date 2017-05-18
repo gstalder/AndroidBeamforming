@@ -94,9 +94,6 @@ public class ClientActivity extends AppCompatActivity {
         viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
 
-        udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
-
-
         discPeers.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "start discovering peers");
@@ -185,25 +182,34 @@ public class ClientActivity extends AppCompatActivity {
             public void run() {
                 try {
                     while (hostAddress == null) {
+                        Log.d(TAG, "no host");
                         getHostAddress();
-                        Log.d(TAG, "current hostaddress: " + hostAddress);
-                        sleep(500);
+                        sleep(1000);
                     }
                     Log.d(TAG, "Host: " + hostAddress);
                     final InetAddress tempBroad = getBroadcastAddress();
                     runOnUiThread(new Runnable()  {
                         @Override
                         public void run() {
-                            clientStatus.append("WifiP2p GO address: " + hostAddress.getHostAddress() + "\n"
-                            + "Calculated Broadcast Address: " + tempBroad);
+                            clientStatus.append("WifiP2p GO address: " + hostAddress.getHostAddress());
                         }
                     });
                     // connect to TCP
+                    sleep(5000); //in case host is slower
+                    micCaptureToSocket = new MicCaptureToSocket(hostAddress, MainActivity.PORT);
+                    clientStatus.append("\n" + "your Host: " + micCaptureToSocket.getInetAddress() +
+                    "\n" + "onw Address" + micCaptureToSocket.getLocalAddress());
 
                     // wait for start signal
+                    udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT, hostAddress);
                     udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION, udpTest);
+                    Log.d(TAG, "after listen for");
 
                     //start transmitting
+                    while(!udpBroadcast.checkReceived()){
+                        sleep(1000);
+                    }
+
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
