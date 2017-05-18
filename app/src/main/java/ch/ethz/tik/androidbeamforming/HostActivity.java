@@ -59,6 +59,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
     private ServerSocket serverSocket;
     private List<SocketToFile> socketToFileList;
+    private List<InetAddress> hostAddressList;
     private Thread connectionAcceptThread;
     private String filename;
     private int clientNumber = 0;
@@ -98,12 +99,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         registerReceiver(mHostReceiver, mIntentFilter);
         discoverPeers();
 
-
-
-
-
-
-
         try {
             serverSocket = new ServerSocket(MainActivity.PORT);
             Log.d(TAG, "server socket created");
@@ -126,13 +121,13 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         Socket newClient = serverSocket.accept();
                         Log.d(TAG, "after accept");
 
+
                         ownName.append(" Your IP: " + newClient.getInetAddress() + "\n" +
                                 "WiFi P2P GO address is: " + hostAddress);
                         clientNumber++;
-                        if(isAcceptingConnections)
+                        if(isAcceptingConnections) {
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
-
-                        //TODO evtl hier gleich serversocket in "else" schliessen. die sockets bleiben moeglicherweise erhalten???
+                        }
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -177,7 +172,11 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
             @Override
             public void onClick(View v){
                 isAcceptingConnections = false;
-                //TODO evtl hier serversocket schliessen?
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 for (int i = 0; i < socketToFileList.size(); i++)
                     socketToFileList.get(i).Start();
