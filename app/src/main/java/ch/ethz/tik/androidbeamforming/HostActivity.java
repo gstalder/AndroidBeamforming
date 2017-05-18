@@ -100,8 +100,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         registerReceiver(mHostReceiver, mIntentFilter);
         discoverPeers();
 
-        udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT);
-
         connectionAcceptThread = new Thread(new Runnable() {
             public void run() {
 
@@ -119,7 +117,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
                 try {
                     serverSocket = new ServerSocket(MainActivity.PORT, 8, hostAddress);
-                    Log.d(TAG, "server socket created on " + hostAddress);
+                    udpBroadcast = new UDPBroadcast(MainActivity.UDP_BROADCAST_PORT, hostAddress);
+                    Log.d(TAG, "server socket & udp socket created @ " + hostAddress);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -188,13 +187,13 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.d(TAG, "SERVERSOCKET COULDNT BE CLOSED");
                 }
 
                 for (int i = 0; i < socketToFileList.size(); i++)
                     socketToFileList.get(i).Start();
-                //nur auskommentiert zum testen
-                //udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, udpStatus, HostActivity.this.getApplicationContext());
+                for (int i = 0; i < clientAddressList.size(); i++)
+                    udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, clientAddressList.get(i));
             }
         });
 
