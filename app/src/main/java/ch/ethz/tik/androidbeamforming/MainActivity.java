@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     // UDP strings, MUST be unique!
     public final static String START_CLIENT_TRANSMISSION = "AABSTART";
+    public final static String SYNC_SEQUENCE_DONE = "SYNC";
     public final static String STOP_CLIENT_TRANSMISSION = "AABSTOP";
 
     private static String TAG = MainActivity.class.getSimpleName();

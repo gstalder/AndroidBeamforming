@@ -51,6 +51,8 @@ public class ClientActivity extends AppCompatActivity {
     private Thread waitForStartThread;
 
     private UDPBroadcast udpBroadcast;
+    private SystemClockSync systemClockSync;
+    private long offset;
 
     //layout elements
     private Button discPeers;
@@ -220,9 +222,26 @@ public class ClientActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            clientStatus.append("\n" + "Transmission started");
+                            clientStatus.append("\n" + "Transmission started, detecting offset...");
                         }
                     });
+
+                    // sync System Clock with host
+                    Log.d(TAG, "before SystemClockSync initiation");
+                    systemClockSync = new SystemClockSync(udpBroadcast);
+                    Log.d(TAG, "systemclockSync initiated, startingClientSync");
+                    systemClockSync.startClientSync();
+                    Log.d(TAG, "client sync started");
+                    while(systemClockSync.getClientOffset() == 0)
+                        sleep(200);
+                    offset = systemClockSync.getClientOffset();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            clientStatus.append("\n" + "Your Offset is: " + offset + "ms");
+                        }
+                    });
+
                     micCaptureToSocket.start();
 
                     //wait for STOP

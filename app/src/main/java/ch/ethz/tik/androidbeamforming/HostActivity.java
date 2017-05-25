@@ -8,6 +8,7 @@ import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
@@ -34,8 +35,6 @@ import java.util.Locale;
 public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
 
     private static String TAG = HostActivity.class.getSimpleName();
-
-    //TODO muss hier nur der serversocket geschlossen werden oder auch alle sockets zu den clients? reicht "einseitiges" schliessen?
 
     private WifiP2pManager mHostManager;
     WifiP2pManager.Channel mHostChannel;
@@ -65,6 +64,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private int clientNumber = 0;
 
     private UDPBroadcast udpBroadcast;
+    private SystemClockSync systemClockSync;
 
 
 
@@ -202,8 +202,15 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
                 for (int i = 0; i < socketToFileList.size(); i++)
                     socketToFileList.get(i).Start();
+
                 for (int i = 0; i < clientAddressList.size(); i++)
                     udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, clientAddressList.get(i));
+
+                systemClockSync = new SystemClockSync(udpBroadcast);
+                systemClockSync.startHostSync(clientAddressList);
+
+
+
             }
         });
 

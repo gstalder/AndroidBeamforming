@@ -125,4 +125,8 @@ public class UDPBroadcast {
         else return false;
     }
 
+    public DatagramSocket getSocket() {
+        return socket;
+    }
+
 }
