@@ -203,7 +203,8 @@ public class ClientActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             clientStatus.append("\n" + "your Host: " + micCaptureToSocket.getInetAddress() +
-                                    "\n" + "own Address: " + micCaptureToSocket.getLocalAddress());
+                                    "\n" + "own Address: " + micCaptureToSocket.getLocalAddress() +
+                                    "\n" + "waiting for Host to start.....");
                         }
                     });
 
@@ -214,15 +215,39 @@ public class ClientActivity extends AppCompatActivity {
 
                     //start transmitting
                     while(!udpBroadcast.checkReceived()){
-                        sleep(1000);
+                        sleep(300);
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            clientStatus.append("\n" + "Transmission started");
+                        }
+                    });
                     micCaptureToSocket.start();
+
+                    //wait for STOP
+
+                    udpBroadcast.listenFor(MainActivity.STOP_CLIENT_TRANSMISSION);
+
+                    while(!udpBroadcast.checkReceived()){
+                        sleep(200);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            clientStatus.append("\n" + "Transmission stopped");
+                        }
+                    });
+                    micCaptureToSocket.stop();
 
                     Log.d(TAG, " end of setAllConnections");
 
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
+
+
+
 
             }
         }, "waitForHostAddress_Thread");

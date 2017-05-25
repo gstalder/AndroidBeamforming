@@ -210,6 +210,9 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         stopReceiving.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v){
+                for (int i = 0; i < clientAddressList.size(); i++)
+                    udpBroadcast.send(MainActivity.STOP_CLIENT_TRANSMISSION, clientAddressList.get(i));
+
                 stopAndClose();
             }
         });
