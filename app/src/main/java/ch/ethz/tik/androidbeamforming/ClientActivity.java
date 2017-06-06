@@ -57,10 +57,8 @@ public class ClientActivity extends AppCompatActivity {
 
     //layout elements
     private Button discPeers;
-    private Button udpTest;
     private TextView connectedTo;
     public TextView clientStatus;
-    public TextView udpStatus;
     private ViewFlipper viewFlipper;
 
 
@@ -92,10 +90,8 @@ public class ClientActivity extends AppCompatActivity {
 
         // get Layout Elements
         discPeers = (Button) this.findViewById(R.id.discPeers);
-        udpTest = (Button) this.findViewById(R.id.udpTest);
         connectedTo = (TextView) this.findViewById(R.id.connectedTo);
         clientStatus = (TextView) this.findViewById(R.id.clientStatus);
-        udpStatus = (TextView) this.findViewById(R.id.udpStatus);
         viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
 
@@ -131,17 +127,7 @@ public class ClientActivity extends AppCompatActivity {
 
             }
         });*/
-
-        udpTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                udpStatus.setText("UDP status: waiting for receiving");
-                udpBroadcast.listenFor(MainActivity.START_CLIENT_TRANSMISSION);
-                getHostAddress();
-                connectedTo.append(" " + hostAddress);
             }
-        });
-    }
 
 
     //Activity Lifecycle Methods ------------------------------------------------------

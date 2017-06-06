@@ -22,17 +22,17 @@
 
                 <Button
                     android:id="@+id/showConn"
-                    android:text="Update Connections States"
                     android:layout_width="150dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:text="Update Connections States" />
 
                 <Button
                     android:id="@+id/resetConnections"
                     android:layout_width="150dp"
                     android:layout_height="40dp"
-                    android:text="Reset Wifi Direct"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:text="Reset Wifi Direct" />
 
             </LinearLayout>
 
@@ -40,50 +40,33 @@
                 android:id="@+id/ownName"
                 android:layout_width="300dp"
                 android:layout_height="150dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="TextView"
-                android:textAlignment="center"
-                android:layout_gravity="center"/>
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/startReceiving"
-                android:text="Start Receiving"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:layout_gravity="center" />
+                android:text="Start Receiving" />
 
             <Button
                 android:id="@+id/stopReceiving"
-                android:text="Stop Receiving"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:layout_gravity="center" />
+                android:text="Stop Receiving" />
 
             <ListView
                 android:id="@+id/peersStatus_listview"
                 android:layout_width="300dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"></ListView>
-
-            <Button
-                android:id="@+id/udpTest"
-                android:text="Test UDP (you send)"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center" />
-
-            <TextView
-                android:id="@+id/udpStatus"
-                android:text="Status: nothing sent"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center" />
-
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"></ListView>
 
 
         </LinearLayout>
@@ -92,7 +75,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
 
         </LinearLayout>

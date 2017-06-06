@@ -50,8 +50,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     private Button startReceiving;
     private Button stopReceiving;
     private Button resetConnections;
-    private Button udpTest;
-    public TextView udpStatus;
     public TextView ownName;
     private WifiP2pDevice ownDevice;
     private String ownDeviceName;
@@ -96,8 +94,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         startReceiving = (Button) this.findViewById(R.id.startReceiving);
         stopReceiving = (Button) this.findViewById(R.id.stopReceiving);
         resetConnections = (Button) this.findViewById(R.id.resetConnections);
-        udpTest = (Button) this.findViewById(R.id.udpTest);
-        udpStatus = (TextView) this.findViewById(R.id.udpStatus);
 
         registerReceiver(mHostReceiver, mIntentFilter);
         discoverPeers();
@@ -138,12 +134,18 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         final InetAddress tempClientAddress = newClient.getLocalAddress();
                         final InetAddress tempHostAddress = newClient.getInetAddress();
 
-                        runOnUiThread(new Runnable() {
+                        /*runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 ownName.append("Your IP: " + tempClientAddress + "\n" +
                                         "New Client: " + tempHostAddress + "\n" +
                                         "WiFi P2P GO address is: " + hostAddress + "\n");
+                            }
+                        });*/
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ownName.append("Client: " + tempHostAddress + "\n");
                             }
                         });
                         clientNumber++;
@@ -224,15 +226,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                 stopAndClose();
             }
         });
-
-        udpTest.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                udpStatus.setText("Status: trying to send");
-                //udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, udpStatus, HostActivity.this.getApplicationContext());
-            }
-        });
-
     }
 
 
