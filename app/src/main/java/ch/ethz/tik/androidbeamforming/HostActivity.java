@@ -210,6 +210,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
                 systemClockSync = new SystemClockSync(udpBroadcast);
                 Log.d(TAG,"system clock sync created");
+                ownName.append("current system time: " + System.currentTimeMillis());
                 systemClockSync.startHostSync(clientAddressList);
             }
         });
