@@ -19,8 +19,6 @@ import java.net.SocketException;
 
 public class UDPBroadcast {
 
-
-
     private DatagramSocket socket;
     private Thread listenThread;
     private static String TAG = UDPBroadcast.class.getSimpleName();

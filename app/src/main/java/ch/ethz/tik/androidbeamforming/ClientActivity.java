@@ -28,7 +28,10 @@ import android.widget.ViewFlipper;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -219,11 +222,8 @@ public class ClientActivity extends AppCompatActivity {
 
 
                     // sync System Clock with host
-                    Log.d(TAG, "before SystemClockSync initiation");
                     systemClockSync = new SystemClockSync(udpBroadcast);
-                    Log.d(TAG, "systemclockSync initiated, startingClientSync");
                     systemClockSync.startClientSync();
-                    Log.d(TAG, "client sync started");
                     while(systemClockSync.getClientOffset() == 0)
                         sleep(200);
                     offset = systemClockSync.getClientOffset();
@@ -233,6 +233,32 @@ public class ClientActivity extends AppCompatActivity {
                             clientStatus.append("\n" + "Your Offset is: " + offset + "ms");
                         }
                     });
+
+                    DatagramSocket tempUDPSocket = udpBroadcast.getSocket();
+                    byte[] listenData = new byte[8];
+                    DatagramPacket listenPacket = new DatagramPacket(listenData, listenData.length);
+                    try {
+                        tempUDPSocket.receive(listenPacket);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    byte[] receivedData = listenPacket.getData();
+                    ByteBuffer tempByteBuffer = ByteBuffer.allocate(8);
+                    tempByteBuffer.put(receivedData);
+                    tempByteBuffer.flip();  //need flip
+                    long hostStartTime = tempByteBuffer.getLong();
+
+                    final long waitTime = hostStartTime + offset - System.currentTimeMillis();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            clientStatus.append("\n" + "Waiting for: " + waitTime + "ms");
+                        }
+                    });
+
+                    sleep(waitTime);
 
                     micCaptureToSocket.start();
 

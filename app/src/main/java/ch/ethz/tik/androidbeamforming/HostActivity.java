@@ -23,9 +23,12 @@ import android.view.View.OnClickListener;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -210,6 +213,24 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
                 for (int i = 0; i < clientAddressList.size(); i++)
                     udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, clientAddressList.get(i));
+
+                long startTime = System.currentTimeMillis() + 5000;
+                ByteBuffer tempByteBuffer = ByteBuffer.allocate(8);
+                tempByteBuffer.putLong(startTime);
+                byte[] sendData = tempByteBuffer.array();
+
+                DatagramSocket tempUDPSocket = udpBroadcast.getSocket();
+                for (int k  = 0; k < clientAddressList.size(); k++) {
+                    try {
+                        DatagramPacket sendPacket = new DatagramPacket(
+                                sendData, sendData.length,
+                                clientAddressList.get(k), MainActivity.UDP_BROADCAST_PORT);
+                        tempUDPSocket.send(sendPacket);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
 
                 systemClockSync = new SystemClockSync(udpBroadcast);
                 Log.d(TAG,"system clock sync created");

@@ -105,7 +105,6 @@ public class SystemClockSync {
                     }
 
                     byte[] receivedData = listenPacket.getData();
-                    Log.d(TAG, "data received");
                     hostTime = bytesToLong(receivedData);
                     if (hostTime == -1)
                         break;
