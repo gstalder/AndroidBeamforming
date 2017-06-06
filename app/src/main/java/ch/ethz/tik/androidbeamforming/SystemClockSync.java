@@ -133,7 +133,7 @@ public class SystemClockSync {
     private long bytesToLong(byte[] bytes) {
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.put(bytes);
-        buffer.flip();//need flip
+        buffer.flip();  //need flip
         return buffer.getLong();
     }
 

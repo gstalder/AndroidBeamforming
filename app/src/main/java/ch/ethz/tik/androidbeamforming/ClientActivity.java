@@ -226,6 +226,8 @@ public class ClientActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             clientStatus.append("\n" + "Transmission started, detecting offset...");
+                            clientStatus.append("\n" + "current system time: " + System.currentTimeMillis());
+
                         }
                     });
 
