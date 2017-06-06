@@ -20,6 +20,8 @@ public class HostDirectBroadcastReceiver extends BroadcastReceiver{
     private WifiP2pManager.Channel mHostChannel;
     private HostActivity mHostActivity;
 
+    private int ownDeviceSet = 0;
+
 
 
     private static String TAG = HostDirectBroadcastReceiver.class.getSimpleName();
@@ -37,9 +39,12 @@ public class HostDirectBroadcastReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
-        WifiP2pDevice device = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
-        if (device != null) {
-            mHostActivity.setOwnDevice(device);
+        if (ownDeviceSet == 0) {
+            WifiP2pDevice device = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
+            if (device != null) {
+                mHostActivity.setOwnDevice(device);
+                ownDeviceSet = 1;
+            }
         }
 
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {

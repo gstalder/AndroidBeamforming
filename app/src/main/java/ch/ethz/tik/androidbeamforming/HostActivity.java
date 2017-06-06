@@ -131,8 +131,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         Socket newClient = serverSocket.accept();
                         Log.d(TAG, "after accept");
 
-                        final InetAddress tempClientAddress = newClient.getLocalAddress();
-                        final InetAddress tempHostAddress = newClient.getInetAddress();
+                        final InetAddress tempHostAddress = newClient.getLocalAddress();
+                        final InetAddress tempClientAddress = newClient.getInetAddress();
 
                         /*runOnUiThread(new Runnable() {
                             @Override
@@ -142,20 +142,15 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                                         "WiFi P2P GO address is: " + hostAddress + "\n");
                             }
                         });*/
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ownName.append("Client: " + tempClientAddress + "\n");
-                            }
-                        });
                         clientNumber++;
-                        Log.d(TAG, "client number: " + clientNumber);
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ownName.append("client number" + clientNumber);
+                                ownName.append("Client " + clientNumber + ": " + tempClientAddress + "\n");
                             }
                         });
+
                         if(isAcceptingConnections) {
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
                             clientAddressList.add(newClient.getInetAddress());
@@ -234,7 +229,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         });
     }
 
-
     //Life cycle methods --------------------------------------------------------------------------------------------------------
     @Override
     public void onStart(){
@@ -276,7 +270,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         ownDevice = device;
         ownDeviceName = device.deviceName;
         ownName = (TextView) findViewById(R.id.ownName);
-        ownName.setText("Your Name is " + this.ownDeviceName);
+        ownName.setText("Your Name is " + this.ownDeviceName + "\n");
     }
 
     public void discoverPeers () {
