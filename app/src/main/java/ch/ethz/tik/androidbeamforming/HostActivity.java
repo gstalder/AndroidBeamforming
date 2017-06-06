@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -72,6 +73,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Log.d(TAG, "host activity created");
 
         //WIFIP2P IMPLEMENTATION
