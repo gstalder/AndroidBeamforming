@@ -178,7 +178,7 @@ public class ClientActivity extends AppCompatActivity {
                     while (hostAddress == null) {
                         Log.d(TAG, "no host");
                         getHostAddress();
-                        sleep(1000);
+                        sleep(500);
                     }
                     Log.d(TAG, "Host: " + hostAddress);
                     final InetAddress tempBroad = getBroadcastAddress();
@@ -215,8 +215,6 @@ public class ClientActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             clientStatus.append("\n" + "Transmission started, detecting offset...");
-                            clientStatus.append("\n" + "current system time: " + System.currentTimeMillis());
-
                         }
                     });
 
@@ -235,6 +233,7 @@ public class ClientActivity extends AppCompatActivity {
                     });
 
                     DatagramSocket tempUDPSocket = udpBroadcast.getSocket();
+                    Log.d(TAG, "has UDP socket");
                     byte[] listenData = new byte[8];
                     DatagramPacket listenPacket = new DatagramPacket(listenData, listenData.length);
                     try {
@@ -242,7 +241,7 @@ public class ClientActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
+                    Log.d(TAG, "has received UDP data");
                     byte[] receivedData = listenPacket.getData();
                     ByteBuffer tempByteBuffer = ByteBuffer.allocate(8);
                     tempByteBuffer.put(receivedData);
