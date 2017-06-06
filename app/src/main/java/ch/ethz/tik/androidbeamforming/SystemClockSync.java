@@ -96,7 +96,7 @@ public class SystemClockSync {
         listenThread = new Thread(new Runnable() {
             public void run() {
 
-                while(hostTime != -1) {
+                while(true) {
                     try {
                         socket.receive(listenPacket);
                         currentTime = System.currentTimeMillis();
@@ -107,7 +107,12 @@ public class SystemClockSync {
                     byte[] receivedData = listenPacket.getData();
                     Log.d(TAG, "data received");
                     hostTime = bytesToLong(receivedData);
+                    if (hostTime == -1)
+                        break;
+                    Log.d(TAG, "Host time at offset Calculaiton: " + hostTime);
+                    Log.d(TAG, "current time at offset calculation: " + currentTime);
                     long offset = currentTime - hostTime;
+                    Log.d(TAG, "resulting offset: " + offset);
                     offsetList.add(offset);
                 }
             }
