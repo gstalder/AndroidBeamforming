@@ -26,6 +26,7 @@ public class SystemClockSync {
     long currentTime;
     long hostTime = 0;
     long clientOffset = 0;
+    final List<Long> offsetList = new ArrayList<>();
 
     private static String TAG = SystemClockSync.class.getSimpleName();
 
@@ -74,11 +75,11 @@ public class SystemClockSync {
     public void startClientSync() {
 
         socket = udpBroadcast.getSocket();
-        final List<Long> offsetList = new ArrayList<>();
+        //final List<Long> offsetList = new ArrayList<>();
 
         final byte[] listenData = new byte[8];
         final DatagramPacket listenPacket = new DatagramPacket(listenData, listenData.length);
-        Log.d(TAG, "zeile 80");
+
         listenThread = new Thread(new Runnable() {
             public void run() {
 
@@ -103,6 +104,7 @@ public class SystemClockSync {
     }
 
     public long getClientOffset(){
+        clientOffset = calculateAverage(offsetList);
         return clientOffset;
     }
 
