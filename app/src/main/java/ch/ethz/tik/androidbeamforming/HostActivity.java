@@ -145,10 +145,17 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ownName.append("Client: " + tempHostAddress + "\n");
+                                ownName.append("Client: " + tempClientAddress + "\n");
                             }
                         });
                         clientNumber++;
+                        Log.d(TAG, "client number: " + clientNumber);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ownName.append("client number" + clientNumber);
+                            }
+                        });
                         if(isAcceptingConnections) {
                             socketToFileList.add(new SocketToFile(newClient, filename + "_" + clientNumber + ".pcm"));
                             clientAddressList.add(newClient.getInetAddress());
@@ -157,7 +164,6 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
 
             }
