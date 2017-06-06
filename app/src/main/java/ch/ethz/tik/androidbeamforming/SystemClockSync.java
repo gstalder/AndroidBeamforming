@@ -1,5 +1,6 @@
 package ch.ethz.tik.androidbeamforming;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
@@ -26,12 +27,15 @@ public class SystemClockSync {
     long hostTime = 0;
     long clientOffset = 0;
 
+    private static String TAG = SystemClockSync.class.getSimpleName();
+
     //threads
     Thread listenThread;
 
     public SystemClockSync(UDPBroadcast udpBroadcast) {
         this.udpBroadcast = udpBroadcast;
         this.port = MainActivity.UDP_BROADCAST_PORT;
+        Log.d(TAG, "SSS Constructor: created!!!!");
     }
 
     public void startHostSync(final List<InetAddress> clientAddressList) {
@@ -72,9 +76,9 @@ public class SystemClockSync {
         socket = udpBroadcast.getSocket();
         final List<Long> offsetList = new ArrayList<>();
 
-        final byte[] listenData = new byte[4];
+        final byte[] listenData = new byte[8];
         final DatagramPacket listenPacket = new DatagramPacket(listenData, listenData.length);
-
+        Log.d(TAG, "zeile 80");
         listenThread = new Thread(new Runnable() {
             public void run() {
 
@@ -87,6 +91,7 @@ public class SystemClockSync {
                     }
 
                     byte[] receivedData = listenPacket.getData();
+                    Log.d(TAG, "data received");
                     hostTime = bytesToLong(receivedData);
                     long offset = currentTime - hostTime;
                     offsetList.add(offset);
@@ -103,14 +108,15 @@ public class SystemClockSync {
 
 
 
+    @NonNull
     private byte[] longToBytes(long x) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.putLong(x);
         return buffer.array();
     }
 
     private long bytesToLong(byte[] bytes) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.put(bytes);
         buffer.flip();//need flip
         return buffer.getLong();

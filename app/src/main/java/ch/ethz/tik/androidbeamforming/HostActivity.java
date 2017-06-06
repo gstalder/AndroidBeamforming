@@ -209,10 +209,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                     udpBroadcast.send(MainActivity.START_CLIENT_TRANSMISSION, clientAddressList.get(i));
 
                 systemClockSync = new SystemClockSync(udpBroadcast);
+                Log.d(TAG,"system clock sync created");
                 systemClockSync.startHostSync(clientAddressList);
-
-
-
             }
         });
 

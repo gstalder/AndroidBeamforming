@@ -229,6 +229,7 @@ public class ClientActivity extends AppCompatActivity {
                         }
                     });
 
+
                     // sync System Clock with host
                     Log.d(TAG, "before SystemClockSync initiation");
                     systemClockSync = new SystemClockSync(udpBroadcast);
