@@ -248,7 +248,7 @@ public class ClientActivity extends AppCompatActivity {
                     tempByteBuffer.flip();  //need flip
                     long hostStartTime = tempByteBuffer.getLong();
 
-                    final long waitTime = hostStartTime + offset - System.currentTimeMillis();
+                    final long waitTime = System.currentTimeMillis() - (hostStartTime + offset);
 
                     runOnUiThread(new Runnable() {
                         @Override
