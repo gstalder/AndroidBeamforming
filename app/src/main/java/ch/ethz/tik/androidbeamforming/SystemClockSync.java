@@ -64,6 +64,19 @@ public class SystemClockSync {
                             e.printStackTrace();
                         }
                     }
+
+                }
+                long endOfTransmission = -1;
+                for (int k  = 0; k < clientAddressList.size(); k++) {
+                    byte[] sendData = longToBytes(endOfTransmission);
+                    try {
+                        DatagramPacket sendPacket = new DatagramPacket(
+                                sendData, sendData.length,
+                                clientAddressList.get(k), port);
+                        socket.send(sendPacket);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
