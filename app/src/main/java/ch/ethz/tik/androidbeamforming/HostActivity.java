@@ -34,6 +34,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.Thread.sleep;
+
 
 public class HostActivity extends AppCompatActivity implements ConnectionInfoListener{
 
@@ -100,8 +102,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
         registerReceiver(mHostReceiver, mIntentFilter);
         discoverPeers();
 
-        SoundGenerator sineSound = new SoundGenerator();
-        sineSound.startSounnd();
+        //SoundGenerator sineSound = new SoundGenerator(200, 5000, 3);
+        //sineSound.startSound();
 
         connectionAcceptThread = new Thread(new Runnable() {
             public void run() {
@@ -110,7 +112,7 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                     Log.d(TAG, "no host");
                     getHostAddress();
                     try {
-                        Thread.sleep(1000);
+                        sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -243,6 +245,14 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                        }
+                        try {
+                            sleep(5000);
+                            Log.d(TAG, "after sineSweepwait");
+                            SoundGenerator sineSound = new SoundGenerator(200, 5000, 3);
+                            sineSound.startSound();
+                        } catch (Exception e){
+                            e.printStackTrace();
                         }
                     }
                 }, "start time send Thread");
