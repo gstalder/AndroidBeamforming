@@ -8,7 +8,6 @@ import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
@@ -100,6 +99,9 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
 
         registerReceiver(mHostReceiver, mIntentFilter);
         discoverPeers();
+
+        SoundGenerator sineSound = new SoundGenerator();
+        sineSound.startSounnd();
 
         connectionAcceptThread = new Thread(new Runnable() {
             public void run() {
