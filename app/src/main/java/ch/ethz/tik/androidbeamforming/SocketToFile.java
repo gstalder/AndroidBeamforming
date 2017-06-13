@@ -28,7 +28,7 @@ public class SocketToFile {
 
     private boolean isRunning = false;
 
-    private static final int BUFFERSIZE = 1024;
+    private static final int BUFFERSIZE = 4096;
 
 
     public SocketToFile (Socket socket, String filename) {

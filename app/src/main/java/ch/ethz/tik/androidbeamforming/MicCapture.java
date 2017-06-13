@@ -18,7 +18,7 @@ public class MicCapture {
     private static final int SAMPLERATE = 44100;
     private static final int CHANNELS = AudioFormat.CHANNEL_IN_MONO;
     private static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
-    private static final int BUFFERSIZE = AudioRecord.getMinBufferSize(SAMPLERATE, CHANNELS, ENCODING);  // set buffersize as small as possible for minimum latency and calculate size in shorts for 16bit recording
+    private static final int BUFFERSIZE = 2*AudioRecord.getMinBufferSize(SAMPLERATE, CHANNELS, ENCODING);  // set buffersize as small as possible for minimum latency and calculate size in shorts for 16bit recording
     private static final int SHORTSIZE = BUFFERSIZE / 2; // short array size for getting data is half the size of the buffer!!!
 
     public MicCapture() {
