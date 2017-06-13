@@ -14,7 +14,6 @@ public class MicCapture {
 
     private AudioRecord recorder = null;
 
-
     private static final int SOURCE = MediaRecorder.AudioSource.MIC;
     private static final int SAMPLERATE = 44100;
     private static final int CHANNELS = AudioFormat.CHANNEL_IN_MONO;
