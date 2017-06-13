@@ -251,6 +251,8 @@ public class HostActivity extends AppCompatActivity implements ConnectionInfoLis
                             Log.d(TAG, "after sineSweepwait");
                             SoundGenerator sineSound = new SoundGenerator(200, 5000, 3);
                             sineSound.startSound();
+                            sleep(10000);
+                            sineSound.startSound();
                         } catch (Exception e){
                             e.printStackTrace();
                         }
